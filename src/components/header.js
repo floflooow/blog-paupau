@@ -25,7 +25,7 @@ const Header = ({ siteTitle }) => (
       </h1>
     </div>
     <div className="w-6/12 flex flex-row flex-no-wrap justify-between">
-      <p className="text-black">Test</p>
+      <p className="text-black">TestMAC</p>
       <p className="text-black">Test</p>
       <p className="text-black">Test</p>
       <p className="text-black">Test</p>
