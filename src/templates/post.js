@@ -5,9 +5,9 @@ import SEO from "../components/seo"
 const Post = () => {
   return (
     <Layout>
-    <SEO title="Post" />
-    <p>Ici il y aura un post</p>
-  </Layout>
+      <SEO title="Post" />
+      <p>Ici il y aura un post</p>
+    </Layout>
   )
 }
 

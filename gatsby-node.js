@@ -9,38 +9,38 @@ exports.createPages = async ({ graphql, actions }) => {
     },
   } = await graphql(`
     query {
-        allWpPost {
+      allWpPost {
+        nodes {
+          categories {
             nodes {
-                    categories {
-                  nodes {
-                    name
-                    slug
-                  }
-                }
-                title
-                commentCount
-                commentStatus
-                comments {
-                  nodes {
-                    author {
-                      node {
-                        name
-                      }
-                    }
-                    date(locale: "fr-FR", formatString: "DD  MMMM YYYY")
-                  }
-                }
-                date(locale: "fr-FR", formatString: "DD  MMMM YYYY")
-                excerpt
-                content
-                slug
-                tags {
-                  nodes {
-                    name
-                  }
-                }
+              name
+              slug
             }
           }
+          title
+          commentCount
+          commentStatus
+          comments {
+            nodes {
+              author {
+                node {
+                  name
+                }
+              }
+              date(locale: "fr-FR", formatString: "DD  MMMM YYYY")
+            }
+          }
+          date(locale: "fr-FR", formatString: "DD  MMMM YYYY")
+          excerpt
+          content
+          slug
+          tags {
+            nodes {
+              name
+            }
+          }
+        }
+      }
     }
   `)
   const {
@@ -49,30 +49,30 @@ exports.createPages = async ({ graphql, actions }) => {
     },
   } = await graphql(`
     query {
-        allWpCategory(filter: {slug: {ne: "non-classe"}}) {
-            nodes {
-              slug
-              name
-              count
-            }
-          }
+      allWpCategory(filter: { slug: { ne: "non-classe" } }) {
+        nodes {
+          slug
+          name
+          count
+        }
+      }
     }
   `)
   const postTemplate = path.resolve(`./src/templates/post.js`)
   const listingPostTemplate = path.resolve(`./src/templates/posts.js`)
   allCategories.forEach(category => {
     createPage({
-        // will be the url for the page
-        path: category.slug,
-        // specify the component template of your choice
-        component: slash(listingPostTemplate),
-        // In the ^template's GraphQL query, 'id' will be available
-        // as a GraphQL variable to query for this post's data.
-        context: {
-          slug: category.slug,
-          count: category.count,
-        },
-      })
+      // will be the url for the page
+      path: category.slug,
+      // specify the component template of your choice
+      component: slash(listingPostTemplate),
+      // In the ^template's GraphQL query, 'id' will be available
+      // as a GraphQL variable to query for this post's data.
+      context: {
+        slug: category.slug,
+        count: category.count,
+      },
+    })
   })
   allPosts.forEach(post => {
     createPage({
