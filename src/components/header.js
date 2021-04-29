@@ -55,24 +55,36 @@ const Header = ({ siteTitle }) => (
         </Link>
       </div>
       <div className="w-4/12 flex flex-row flex-no-wrap justify-between items-center mr-1">
+      <Link to="/shopping">
         <p className="text-black font-sans-serif text-xs uppercase mb-0">
           Shopping
         </p>
+        </Link>
+        <Link to="/mode">
         <p className="text-black font-sans-serif text-xs uppercase mb-0">
           Mode
         </p>
+        </Link>
+        <Link to="/beaute">
         <p className="text-black font-sans-serif text-xs uppercase mb-0">
           Beauté
         </p>
+        </Link>
+        <Link to="/lifestyle">
         <p className="text-black font-sans-serif text-xs uppercase mb-0">
           Lifestyle
         </p>
+        </Link>
+        <Link to="/food">
         <p className="text-black font-sans-serif text-xs uppercase mb-0">
           Food
         </p>
+        </Link>
+        <Link to="/voyages">
         <p className="text-black font-sans-serif text-xs uppercase mb-0">
           Voyages
         </p>
+        </Link>
         <StaticImage
           src="../images/loupe.svg"
           width={24}
