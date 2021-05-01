@@ -3,8 +3,8 @@ import { Link } from "gatsby"
 import { StaticImage } from "gatsby-plugin-image"
 
 const Footer = () => (
-  <>
-    <footer className="flex flex-row flex-no-wrap justify-between items-center w-full px-9 bg-beige py-9">
+  <footer className="flex flex-col w-full pt-9">
+    <div className="flex flex-row flex-no-wrap justify-between items-center w-full px-9 bg-beige py-3">
       <div className="w-1/3 flex flex-col items-center justify-center my-9 border-r border-rouille border-opacity-25">
         <div className="flex flex-row justify-center items-center my-1">
           <StaticImage
@@ -68,7 +68,7 @@ const Footer = () => (
           Mentions légales
         </p>
       </div>
-    </footer>
+    </div>
     <div className="flex flex-row justify-between items-center mx-9 my-1">
       <p className="font-serif text-xxs font-light my-1">
         Blog mode et lifestyle par Pauline Loiseau
@@ -77,7 +77,7 @@ const Footer = () => (
         2021 &copy; Tous droits réservés &#124; Florian Triboulin
       </p>
     </div>
-  </>
+  </footer>
 )
 
 export default Footer
