@@ -17,13 +17,13 @@ const Layout = ({ children }) => {
   `)
 
   return (
-    <>
+    <div className="relative w-full min-h-screen">
       <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
-      <div className="px-9 my-12">
+      <div className="px-9 mt-6 mb-12">
         <main>{children}</main>
       </div>
       <Footer />
-    </>
+    </div>
   )
 }
 

@@ -22,10 +22,20 @@ module.exports = {
       serif: ["Palatino", "serif"],
       "sans-serif": ["Helvetica", "sans-serif"],
     },
-    extend: {},
+    extend: {
+      width: {
+        "49/100": "49%",
+      },
+      height: {
+        derniersArticles: "40rem",
+        "49/100": "49%",
+        "80/100": "80%",
+      },
+    },
     colors: {
       beige: "#FFE1C2",
       rouille: "#9a2f09",
+      white: "#FFFFFF",
     },
   },
   variants: {
