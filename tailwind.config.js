@@ -25,6 +25,7 @@ module.exports = {
     extend: {
       width: {
         "49/100": "49%",
+        "30/100": "30%",
       },
       height: {
         derniersArticles: "40rem",
@@ -33,7 +34,7 @@ module.exports = {
       },
     },
     colors: {
-      beige: "#FFE1C2",
+      beige: "#FFEBD6",
       rouille: "#9a2f09",
       white: "#FFFFFF",
     },
