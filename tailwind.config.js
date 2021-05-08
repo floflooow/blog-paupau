@@ -26,6 +26,7 @@ module.exports = {
       width: {
         "49/100": "49%",
         "30/100": "30%",
+        "15/100": "15%",
       },
       height: {
         derniersArticles: "40rem",

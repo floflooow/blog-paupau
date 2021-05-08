@@ -8,7 +8,7 @@ import LooksDuJour from "../components/looksDuJour"
 const IndexPage = () => (
   <Layout>
     <SEO title="Home" />
-    <h2 className="font-sans-serif font-bold text-black">
+    <h2 className="text-3xl font-sans-serif font-thin text-rouille">
       Mes derniers articles
     </h2>
     <DerniersArticles />

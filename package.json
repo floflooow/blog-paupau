@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
+    "@brainhubeu/react-carousel": "^2.0.3",
     "gatsby": "^3.2.1",
     "gatsby-plugin-gatsby-cloud": "^2.2.0",
     "gatsby-plugin-image": "^1.2.1",
@@ -15,6 +16,7 @@
     "gatsby-source-filesystem": "^3.2.0",
     "gatsby-source-wordpress": "^5.3.1",
     "gatsby-transformer-sharp": "^3.2.0",
+    "html-react-parser": "^1.2.6",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

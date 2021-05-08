@@ -5,7 +5,19 @@ import { StaticImage } from "gatsby-plugin-image"
 const DerniersArticles = () => {
   const data = useStaticQuery(graphql`
     query derniersArticles {
-      allWpPost(limit: 5, sort: { fields: date, order: DESC }) {
+      allWpPost(
+        limit: 5
+        sort: { fields: date, order: DESC }
+        filter: {
+          categories: {
+            nodes: {
+              elemMatch: {
+                slug: { in: ["mode", "lifestyle", "voyages", "food", "beaute"] }
+              }
+            }
+          }
+        }
+      ) {
         nodes {
           categories {
             nodes {
