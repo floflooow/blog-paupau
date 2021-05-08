@@ -9,7 +9,26 @@ exports.createPages = async ({ graphql, actions }) => {
     },
   } = await graphql(`
     query {
-      allWpPost {
+      allWpPost(
+        filter: {
+          categories: {
+            nodes: {
+              elemMatch: {
+                slug: {
+                  in: [
+                    "mode"
+                    "lifestyle"
+                    "voyages"
+                    "food"
+                    "beaute"
+                    "outfits"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ) {
         nodes {
           categories {
             nodes {
@@ -49,7 +68,13 @@ exports.createPages = async ({ graphql, actions }) => {
     },
   } = await graphql(`
     query {
-      allWpCategory(filter: { slug: { ne: "non-classe" } }) {
+      allWpCategory(
+        filter: {
+          slug: {
+            in: ["mode", "lifestyle", "voyages", "food", "beaute", "outfits"]
+          }
+        }
+      ) {
         nodes {
           slug
           name
