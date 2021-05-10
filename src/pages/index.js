@@ -4,6 +4,7 @@ import SEO from "../components/seo"
 import DerniersArticles from "../components/derniersArticles"
 import ModeDerniersArticles from "../components/modeDerniersArticles"
 import LooksDuJour from "../components/looksDuJour"
+import Outfits from "../components/outfits"
 
 const IndexPage = () => (
   <Layout>
@@ -13,6 +14,8 @@ const IndexPage = () => (
     </h2>
     <DerniersArticles />
     <ModeDerniersArticles />
+    <Outfits />
+    <div className="mx-9 border-b border-rouille border-opacity-25"></div>
     <LooksDuJour />
   </Layout>
 )
