@@ -65,15 +65,15 @@ const Outfits = () => {
             Outfits
           </h3>
         </div>
-        <div className="flex flex-row flex-no-wrap items-center w-full mt-6">
+        <div className="flex flex-row flex-no-wrap w-full mt-6">
           {articleList.map((article, key) => (
             <div
               key={key}
               className="imageContainer relative w-30/100 mx-auto flex flex-col"
             >
-              <Link to={`/outfits${article.uri}`}>
+              <Link className="h-3/4" to={`/outfits${article.uri}`}>
                 <img
-                  className="imageWithoutFullHeight h-80/100"
+                  className="imageWithoutFullHeight h-full"
                   alt={article.altText}
                   src={
                     article.featuredImage.node.localFile.childImageSharp.fixed
@@ -81,7 +81,7 @@ const Outfits = () => {
                   }
                 ></img>
               </Link>
-              <div className="w-full flex flex-col bg-beige pt-2 py-9 h-40">
+              <div className="w-full flex flex-col bg-beige pt-2 py-9 h-1/4">
                 <p className="text-white w-fit font-thin font-sans-serif text-xl mx-auto mt-2 mb-0 py-1 px-2 rounded-sm bg-rouille bg-opacity-75">
                   {article.title}
                 </p>

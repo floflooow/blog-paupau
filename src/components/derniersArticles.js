@@ -94,7 +94,7 @@ const DerniersArticles = () => {
             className="imageContainer relative w-49/100 flex flex-col"
             to={`/${article.categories.nodes[0].slug}${article.uri}`}
           >
-            <div>
+            <div className="h-full">
               <img
                 className="imageWithoutFullHeight h-80/100"
                 alt={article.altText}
