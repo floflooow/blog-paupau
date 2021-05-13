@@ -96,6 +96,7 @@ exports.createPages = async ({ graphql, actions }) => {
       context: {
         slug: category.slug,
         count: category.count,
+        name: category.name,
       },
     })
   })

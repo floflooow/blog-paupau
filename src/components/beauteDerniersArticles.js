@@ -7,6 +7,7 @@ const BeauteDerniersArticles = () => {
     query beauteDerniersArticles {
       allWpPost(
         limit: 3
+        sort: { fields: date, order: DESC }
         filter: {
           categories: { nodes: { elemMatch: { slug: { eq: "beaute" } } } }
         }
