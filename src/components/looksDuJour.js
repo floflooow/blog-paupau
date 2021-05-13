@@ -91,7 +91,7 @@ const LooksDuJour = () => {
     },
   }
   return (
-    <div className="flex flex-col pt-16 pb-12 px-20 -mx-9">
+    <div className="flex flex-col pt-16 pb-24 px-20 -mx-9 bg-beige">
       <div className="flex flex-row flex-no-wrap items-center justify-between w-5/12 mx-auto">
         <div
           role="button"
@@ -126,6 +126,7 @@ const LooksDuJour = () => {
             centerMode={true}
             showIndicators={null}
             showStatus={false}
+            showThumbs={false}
             infiniteLoop={true}
             centerSlidePercentage={100 / 3}
             renderArrowPrev={(onClickHandler, hasPrev) =>
@@ -188,15 +189,16 @@ const LooksDuJour = () => {
               return (
                 <div
                   key={key}
-                  className="imageContainer relative w-10/12 mx-auto flex flex-col"
+                  className="imageContainer relative w-10/12 mx-auto h-full flex flex-col"
                 >
                   <a
                     target="_blank"
+                    className="h-full"
                     rel="noopener noreferrer"
                     href={`${text ? text : ""}`}
                   >
                     <img
-                      className="imageWithoutFullHeight h-80/100"
+                      className="image"
                       alt={element.altText}
                       src={
                         element.featuredImage.node.localFile.childImageSharp
@@ -216,6 +218,7 @@ const LooksDuJour = () => {
             showIndicators={null}
             showStatus={false}
             infiniteLoop={true}
+            showThumbs={false}
             centerSlidePercentage={100 / 3}
             renderArrowPrev={(onClickHandler, hasPrev) =>
               hasPrev && (
@@ -277,15 +280,16 @@ const LooksDuJour = () => {
               return (
                 <div
                   key={key}
-                  className="imageContainer relative w-10/12 mx-auto flex flex-col"
+                  className="imageContainer relative w-10/12 mx-auto h-full flex flex-col"
                 >
                   <a
                     target="_blank"
+                    className="h-full"
                     rel="noopener noreferrer"
                     href={`${text ? text : ""}`}
                   >
                     <img
-                      className="imageWithoutFullHeight h-80/100"
+                      className="image"
                       alt={element.altText}
                       src={
                         element.featuredImage.node.localFile.childImageSharp

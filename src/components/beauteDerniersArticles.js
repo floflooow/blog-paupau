@@ -2,13 +2,13 @@ import * as React from "react"
 import { useStaticQuery, graphql, Link } from "gatsby"
 import { StaticImage } from "gatsby-plugin-image"
 
-const ModeDerniersArticles = () => {
+const BeauteDerniersArticles = () => {
   const data = useStaticQuery(graphql`
-    query modeDerniersArticles {
+    query beauteDerniersArticles {
       allWpPost(
         limit: 3
         filter: {
-          categories: { nodes: { elemMatch: { slug: { eq: "mode" } } } }
+          categories: { nodes: { elemMatch: { slug: { eq: "beaute" } } } }
         }
       ) {
         nodes {
@@ -39,11 +39,11 @@ const ModeDerniersArticles = () => {
   `)
   let articleList = data.allWpPost.nodes
   return (
-    <div className="flex flex-col bg-beige pt-16 pb-12 px-20 -mx-9">
-      <div className="relative flex pt-16 pb-12 px-20 -mx-9 flex-row flex-no-wrap justify-between items-center bg-beige">
-        <div className="transform -rotate-90 absolute -left-20 top-28">
+    <div className="flex flex-col pt-16 pb-12 px-20 -mx-9">
+      <div className="relative flex pt-16 pb-12 px-20 -mx-9 flex-row flex-no-wrap justify-between items-center">
+        <div className="transform -rotate-90 absolute -left-24 top-28">
           <h3 className="text-4xl font-sans-serif font-thin text-center text-rouille m-0">
-            Articles de mode
+            Articles de beauté
           </h3>
         </div>
         <div className="flex flex-row flex-no-wrap w-full">
@@ -91,15 +91,15 @@ const ModeDerniersArticles = () => {
             </Link>
           ))}
         </div>
-        <div className="transform rotate-90 absolute -right-20 bottom-28">
+        <div className="transform rotate-90 absolute -right-24 bottom-28">
           <h3 className="text-4xl font-sans-serif font-thin text-center text-rouille m-0">
-            Articles de mode
+            Articles de beauté
           </h3>
         </div>
       </div>
       <Link
         className="flex mt-3 mx-auto text-sm text-rouille font-thin font-serif hoverBorder"
-        to="/mode"
+        to="/beaute"
       >
         Voir tout
       </Link>
@@ -107,4 +107,4 @@ const ModeDerniersArticles = () => {
   )
 }
 
-export default ModeDerniersArticles
+export default BeauteDerniersArticles
