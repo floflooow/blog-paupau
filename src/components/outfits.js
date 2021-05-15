@@ -41,7 +41,7 @@ const Outfits = () => {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs text-rouille font-sans-serif font-light"
+            className="text-xs text-rouille text-center font-sans-serif font-light"
             href={domNode.attribs.href}
           >
             {domToReact(domNode.children, options)}
@@ -50,7 +50,7 @@ const Outfits = () => {
       }
       if (domNode.name === "p") {
         return (
-          <p className="text-xs font-sans-serif text-black font-light leading-tight m-0">
+          <p className="text-xs font-sans-serif text-center text-black font-light leading-tight m-0">
             {domToReact(domNode.children, options)}
           </p>
         )
@@ -71,7 +71,7 @@ const Outfits = () => {
               key={key}
               className="imageContainer relative w-30/100 mx-auto flex flex-col"
             >
-              <Link className="h-3/4" to={`/outfits${article.uri}`}>
+              <Link className="h-72/100" to={`/outfits${article.uri}`}>
                 <img
                   className="imageWithoutFullHeight h-full"
                   alt={article.altText}
@@ -81,7 +81,7 @@ const Outfits = () => {
                   }
                 ></img>
               </Link>
-              <div className="w-full flex flex-col bg-beige pt-2 py-9 h-1/4">
+              <div className="w-full flex flex-col bg-beige pt-2 py-9 h-28/100">
                 <p className="text-white w-fit font-thin font-sans-serif text-xl mx-auto mt-2 mb-0 py-1 px-2 rounded-sm bg-rouille bg-opacity-75">
                   {article.title}
                 </p>
