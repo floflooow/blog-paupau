@@ -8,20 +8,21 @@
   height: 100%;
   object-fit: cover;
   margin: 0;
-  filter: brightness(0.9);
   transition: 0.3s ease;
+}
+.imageLowBright {
+  filter: brightness(0.8);
 }
 .imageWithoutFullHeight {
   max-width: 100%;
   width: 100%;
   object-fit: cover;
   margin: 0;
-  filter: brightness(0.9);
   transition: 0.3s ease;
 }
 .imageContainer:hover .image,
 .imageContainer:hover .imageWithoutFullHeight {
-  filter: brightness(0.6);
+  filter: brightness(0.7);
   transition: 0.3s ease;
 }
 

@@ -58,6 +58,19 @@ exports.createPages = async ({ graphql, actions }) => {
               name
             }
           }
+          featuredImage {
+            node {
+              localFile {
+                childImageSharp {
+                  gatsbyImageData(
+                    jpgOptions: { quality: 100 }
+                    layout: FULL_WIDTH
+                  )
+                }
+              }
+              altText
+            }
+          }
         }
       }
     }

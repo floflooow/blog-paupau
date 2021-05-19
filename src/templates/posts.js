@@ -1,5 +1,5 @@
 import { graphql, Link } from "gatsby"
-import { StaticImage } from "gatsby-plugin-image"
+import { GatsbyImage, StaticImage } from "gatsby-plugin-image"
 import React, { useState } from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -25,9 +25,10 @@ export const pageQuery = graphql`
           node {
             localFile {
               childImageSharp {
-                fixed(quality: 100) {
-                  src
-                }
+                gatsbyImageData(
+                  jpgOptions: { quality: 100 }
+                  layout: FULL_WIDTH
+                )
               }
             }
             altText
@@ -84,14 +85,14 @@ const Posts = ({ data, pageContext }) => {
                   className="h-72/100"
                   to={`/${article.categories.nodes[0].slug}${article.uri}`}
                 >
-                  <img
+                  <GatsbyImage
                     className="imageWithoutFullHeight h-full"
                     alt={article.altText}
-                    src={
-                      article.featuredImage.node.localFile.childImageSharp.fixed
-                        .src
+                    image={
+                      article.featuredImage.node.localFile.childImageSharp
+                        .gatsbyImageData
                     }
-                  ></img>
+                  ></GatsbyImage>
                 </Link>
                 <div className="w-full flex flex-col bg-beige pt-2 py-9 h-28/100">
                   <p className="text-white w-fit font-thin font-sans-serif text-xl mx-auto mt-2 mb-0 py-1 px-2 rounded-sm bg-rouille bg-opacity-75">
@@ -111,14 +112,14 @@ const Posts = ({ data, pageContext }) => {
                 to={`/${article.categories.nodes[0].slug}${article.uri}`}
               >
                 <div className="h-full">
-                  <img
+                  <GatsbyImage
                     className="imageWithoutFullHeight h-80/100"
                     alt={article.altText}
-                    src={
-                      article.featuredImage.node.localFile.childImageSharp.fixed
-                        .src
+                    image={
+                      article.featuredImage.node.localFile.childImageSharp
+                        .gatsbyImageData
                     }
-                  ></img>
+                  ></GatsbyImage>
                   <p className="text-black font-light font-sans-serif text-xl mx-0 mb-0 mt-3">
                     {article.title}
                   </p>

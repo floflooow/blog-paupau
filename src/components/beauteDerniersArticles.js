@@ -1,6 +1,6 @@
 import * as React from "react"
 import { useStaticQuery, graphql, Link } from "gatsby"
-import { StaticImage } from "gatsby-plugin-image"
+import { GatsbyImage, StaticImage } from "gatsby-plugin-image"
 
 const BeauteDerniersArticles = () => {
   const data = useStaticQuery(graphql`
@@ -25,9 +25,10 @@ const BeauteDerniersArticles = () => {
             node {
               localFile {
                 childImageSharp {
-                  fixed(quality: 100) {
-                    src
-                  }
+                  gatsbyImageData(
+                    jpgOptions: { quality: 100 }
+                    layout: FULL_WIDTH
+                  )
                 }
               }
               altText
@@ -52,17 +53,17 @@ const BeauteDerniersArticles = () => {
             <Link
               className="imageContainer relative w-30/100 mx-auto flex flex-col"
               key={key}
-              to={`/mode${article.uri}`}
+              to={`/beaute${article.uri}`}
             >
               <div className="h-full">
-                <img
+                <GatsbyImage
                   className="imageWithoutFullHeight h-80/100"
                   alt={article.altText}
-                  src={
-                    article.featuredImage.node.localFile.childImageSharp.fixed
-                      .src
+                  image={
+                    article.featuredImage.node.localFile.childImageSharp
+                      .gatsbyImageData
                   }
-                ></img>
+                ></GatsbyImage>
                 <p className="text-black font-light font-sans-serif text-xl mx-0 mb-0 mt-3">
                   {article.title}
                 </p>
