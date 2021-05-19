@@ -1,6 +1,6 @@
 import * as React from "react"
 import { useStaticQuery, graphql, Link } from "gatsby"
-import { StaticImage } from "gatsby-plugin-image"
+import { GatsbyImage, StaticImage } from "gatsby-plugin-image"
 
 const DerniersArticles = () => {
   const data = useStaticQuery(graphql`
@@ -32,9 +32,10 @@ const DerniersArticles = () => {
             node {
               localFile {
                 childImageSharp {
-                  fixed(quality: 100) {
-                    src
-                  }
+                  gatsbyImageData(
+                    jpgOptions: { quality: 100 }
+                    layout: FULL_WIDTH
+                  )
                 }
               }
               altText
@@ -55,11 +56,11 @@ const DerniersArticles = () => {
         to={`/${firstArticle.categories.nodes[0].slug}${firstArticle.uri}`}
       >
         <div className="h-full">
-          <img
-            className="image"
+          <GatsbyImage
+            className="image imageLowBright"
             alt={firstImage.altText}
-            src={firstImage.localFile.childImageSharp.fixed.src}
-          ></img>
+            image={firstImage.localFile.childImageSharp.gatsbyImageData}
+          ></GatsbyImage>
           <p className="absolute bottom-56 left-9 text-white font-light font-sans-serif text-3xl m-0">
             {firstArticle.title}
           </p>
@@ -95,13 +96,14 @@ const DerniersArticles = () => {
             to={`/${article.categories.nodes[0].slug}${article.uri}`}
           >
             <div className="h-full">
-              <img
+              <GatsbyImage
                 className="imageWithoutFullHeight h-80/100"
                 alt={article.altText}
-                src={
-                  article.featuredImage.node.localFile.childImageSharp.fixed.src
+                image={
+                  article.featuredImage.node.localFile.childImageSharp
+                    .gatsbyImageData
                 }
-              ></img>
+              ></GatsbyImage>
               <p className="text-black font-light font-sans-serif text-xl mx-0 mb-0 mt-3">
                 {article.title}
               </p>

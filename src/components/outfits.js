@@ -1,6 +1,7 @@
 import * as React from "react"
 import { useStaticQuery, graphql, Link } from "gatsby"
 import parse, { domToReact } from "html-react-parser"
+import { GatsbyImage } from "gatsby-plugin-image"
 
 const Outfits = () => {
   const data = useStaticQuery(graphql`
@@ -18,9 +19,10 @@ const Outfits = () => {
             node {
               localFile {
                 childImageSharp {
-                  fixed(quality: 100) {
-                    src
-                  }
+                  gatsbyImageData(
+                    jpgOptions: { quality: 100 }
+                    layout: FULL_WIDTH
+                  )
                 }
               }
               altText
@@ -72,14 +74,14 @@ const Outfits = () => {
               className="imageContainer relative w-30/100 mx-auto flex flex-col"
             >
               <Link className="h-72/100" to={`/outfits${article.uri}`}>
-                <img
+                <GatsbyImage
                   className="imageWithoutFullHeight h-full"
                   alt={article.altText}
-                  src={
-                    article.featuredImage.node.localFile.childImageSharp.fixed
-                      .src
+                  image={
+                    article.featuredImage.node.localFile.childImageSharp
+                      .gatsbyImageData
                   }
-                ></img>
+                ></GatsbyImage>
               </Link>
               <div className="w-full flex flex-col bg-beige pt-2 py-9 h-28/100">
                 <p className="text-white w-fit font-thin font-sans-serif text-xl mx-auto mt-2 mb-0 py-1 px-2 rounded-sm bg-rouille bg-opacity-75">
