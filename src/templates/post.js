@@ -159,19 +159,8 @@ const Post = ({ data }) => {
         domNode.name === "ul" &&
         domNode.attribs?.class?.includes("blocks-gallery-grid")
       ) {
-        let numberOfColumns = domNode.parent?.attribs?.class?.match(/(\d+)/)
         return (
-          <ul
-            className={`grid grid-cols-${
-              numberOfColumns ? numberOfColumns[0] : "2"
-            } gap-2 m-0 h-${
-              numberOfColumns[0] === "3"
-                ? "60"
-                : numberOfColumns[0] === "2"
-                ? "96"
-                : "128"
-            }`}
-          >
+          <ul className="flex flex-row flex-no-wrap justify-between m-0">
             {domToReact(domNode.children, options)}
           </ul>
         )
@@ -180,13 +169,42 @@ const Post = ({ data }) => {
         domNode.name === "li" &&
         domNode.attribs?.class?.includes("blocks-gallery-item")
       ) {
-        return <li className="flex">{domToReact(domNode.children, options)}</li>
+        let numberOfColumns = domNode.parent?.parent?.attribs?.class?.match(
+          /(\d+)/
+        )
+        return (
+          <li
+            className={`flex w-${
+              numberOfColumns && numberOfColumns[0] === "2"
+                ? "49/100"
+                : numberOfColumns[0] === "3"
+                ? "32/100"
+                : "full"
+            }`}
+          >
+            {domToReact(domNode.children, options)}
+          </li>
+        )
       }
       if (domNode.name === "figure" && domNode.parent?.name === "li") {
         return (
           <figure className="w-full h-full image">
             {domToReact(domNode.children, options)}
           </figure>
+        )
+      }
+      if (domNode.name === "img" && !domNode.attribs["aria-hidden"]) {
+        console.log(domNode.attribs)
+        return (
+          <img
+            className="w-full h-full object-cover object-center"
+            aria-hidden={domNode.attribs["aria-hidden"]}
+            loading={domNode.attribs.loading}
+            src={domNode.attribs.src}
+            srcSet={domNode.attribs.srcset}
+            alt={domNode.attribs.alt}
+            sizes={domNode.attribs.sizes}
+          ></img>
         )
       }
       if (domNode.name === "figcaption") {
