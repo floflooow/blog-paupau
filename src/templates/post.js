@@ -5,31 +5,6 @@ import SEO from "../components/seo"
 import parse, { domToReact } from "html-react-parser"
 import { graphql } from "gatsby"
 
-const formatStringToCamelCase = str => {
-  const splitted = str.split("-")
-  if (splitted.length === 1) return splitted[0]
-  return (
-    splitted[0] +
-    splitted
-      .slice(1)
-      .map(word => word[0].toUpperCase() + word.slice(1))
-      .join("")
-  )
-}
-
-const getStyleObjectFromString = str => {
-  const style = {}
-  str.split(";").forEach(el => {
-    const [property, value] = el.split(":")
-    if (!property) return
-
-    const formattedProperty = formatStringToCamelCase(property.trim())
-    style[formattedProperty] = value.trim()
-  })
-
-  return style
-}
-
 export const pageQuery = graphql`
   query($slug: String) {
     allWpPost(filter: { slug: { eq: $slug } }) {
@@ -148,12 +123,8 @@ const Post = ({ data }) => {
         domNode.name === "span" &&
         domNode.attribs?.class?.includes("gatsby-image-wrapper")
       ) {
-        let objectStyle = getStyleObjectFromString(domNode.attribs?.style)
         return (
-          <span
-            style={objectStyle ? objectStyle : null}
-            className="h-full inline-block"
-          >
+          <span className="h-full block relative overflow-hidden">
             {domToReact(domNode.children, options)}
           </span>
         )
@@ -220,7 +191,7 @@ const Post = ({ data }) => {
       }
       if (domNode.name === "figcaption") {
         return (
-          <figcaption className="-mt-2 text-xs font-sans-serif text-black opacity-50 font-light">
+          <figcaption className="text-xs font-sans-serif text-black opacity-50 font-light">
             {domToReact(domNode.children, options)}
           </figcaption>
         )
