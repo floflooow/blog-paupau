@@ -2,9 +2,185 @@ import { GatsbyImage, StaticImage } from "gatsby-plugin-image"
 import * as React from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+import parse, { domToReact } from "html-react-parser"
+
+const formatStringToCamelCase = str => {
+  const splitted = str.split("-")
+  if (splitted.length === 1) return splitted[0]
+  return (
+    splitted[0] +
+    splitted
+      .slice(1)
+      .map(word => word[0].toUpperCase() + word.slice(1))
+      .join("")
+  )
+}
+
+const getStyleObjectFromString = str => {
+  const style = {}
+  str.split(";").forEach(el => {
+    const [property, value] = el.split(":")
+    if (!property) return
+
+    const formattedProperty = formatStringToCamelCase(property.trim())
+    style[formattedProperty] = value.trim()
+  })
+
+  return style
+}
 
 const Post = ({ pageContext }) => {
-  console.log(pageContext.post)
+  const options = {
+    trim: true,
+    replace: domNode => {
+      if (domNode.name === "a") {
+        return (
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-rouille font-sans-serif underline"
+            href={domNode.attribs.href}
+          >
+            {domToReact(domNode.children, options)}
+          </a>
+        )
+      }
+      if (domNode.name === "h2") {
+        return (
+          <h2
+            className="text-2xl text-black font-sans-serif font-bold mb-4"
+            href={domNode.attribs.href}
+          >
+            {domToReact(domNode.children, options)}
+          </h2>
+        )
+      }
+      if (domNode.name === "h3") {
+        return (
+          <h3
+            className="text-xl text-black font-sans-serif font-bold mb-4"
+            href={domNode.attribs.href}
+          >
+            {domToReact(domNode.children, options)}
+          </h3>
+        )
+      }
+      if (domNode.name === "h4") {
+        return (
+          <h4
+            className="text-lg text-black font-sans-serif font-bold mb-4"
+            href={domNode.attribs.href}
+          >
+            {domToReact(domNode.children, options)}
+          </h4>
+        )
+      }
+      if (domNode.name === "p") {
+        let className = domNode.attribs.class
+        let alignement
+        if (className && className.includes("has-text-align")) {
+          alignement = className.split("-")[3]
+        }
+        return (
+          <p
+            className={`text-sm font-sans-serif text-${
+              alignement ? alignement : "left"
+            } text-black font-light leading-tight`}
+          >
+            {domToReact(domNode.children, options)}
+          </p>
+        )
+      }
+      if (
+        domNode.name === "span" &&
+        domNode.attribs?.class?.includes("has-inline-color")
+      ) {
+        return (
+          <span className="text-rouille">
+            {domToReact(domNode.children, options)}
+          </span>
+        )
+      }
+      if (
+        domNode.name === "span" &&
+        domNode.attribs?.class?.includes("gatsby-image-wrapper")
+      ) {
+        let objectStyle = getStyleObjectFromString(domNode.attribs?.style)
+        return (
+          <span style={objectStyle} className="h-full inline-block">
+            {domToReact(domNode.children, options)}
+          </span>
+        )
+      }
+      if (
+        domNode.name === "figure" &&
+        domNode.attribs?.class?.includes("wp-block-image")
+      ) {
+        return (
+          <figure className="h-derniersArticles w-full">
+            {domToReact(domNode.children, options)}
+          </figure>
+        )
+      }
+      if (
+        domNode.name === "li" &&
+        !domNode.attribs?.class?.includes("blocks-gallery-item")
+      ) {
+        return (
+          <li className="text-sm font-sans-serif text-black font-light leading-tight">
+            {domToReact(domNode.children, options)}
+          </li>
+        )
+      }
+      if (
+        domNode.name === "ul" &&
+        !domNode.attribs?.class?.includes("blocks-gallery-grid")
+      ) {
+        return <ul className="ml-4">{domToReact(domNode.children, options)}</ul>
+      }
+      if (
+        domNode.name === "ul" &&
+        domNode.attribs?.class?.includes("blocks-gallery-grid")
+      ) {
+        let numberOfColumns = domNode.parent.attribs.class.match(/(\d+)/)
+        return (
+          <ul
+            className={`grid grid-cols-${
+              numberOfColumns ? numberOfColumns[0] : "2"
+            } gap-2 m-0 h-${
+              numberOfColumns[0] === "3"
+                ? "60"
+                : numberOfColumns[0] === "2"
+                ? "96"
+                : "128"
+            }`}
+          >
+            {domToReact(domNode.children, options)}
+          </ul>
+        )
+      }
+      if (
+        domNode.name === "li" &&
+        domNode.attribs?.class?.includes("blocks-gallery-item")
+      ) {
+        return <li className="flex">{domToReact(domNode.children, options)}</li>
+      }
+      if (domNode.name === "figure" && domNode.parent?.name === "li") {
+        return (
+          <figure className="w-full h-full image">
+            {domToReact(domNode.children, options)}
+          </figure>
+        )
+      }
+      if (domNode.name === "figcaption") {
+        return (
+          <figcaption className="-mt-2 text-xs font-sans-serif text-black opacity-50 font-light">
+            {domToReact(domNode.children, options)}
+          </figcaption>
+        )
+      }
+    },
+  }
   return (
     <Layout>
       <SEO title="Post" />
@@ -45,6 +221,63 @@ const Post = ({ pageContext }) => {
                   .gatsbyImageData
               }
             ></GatsbyImage>
+            <div className="my-6 w-full">
+              {pageContext.post.content && (
+                <>{parse(pageContext.post.content, options)}</>
+              )}
+            </div>
+            <div className="w-full flex flex-row justify-between flex-no-wrap mt-12">
+              <div className="w-5/12 flex flex-row flex-no-wrap items-center">
+                <p className="font-sans-serif text-xs text-black m-0 mr-2 opacity-50">
+                  Par Pauline Loiseau
+                </p>
+                <StaticImage
+                  src="../images/comments-black.svg"
+                  width={16}
+                  height={16}
+                  className="mr-1 opacity-50"
+                  quality={100}
+                  formats={["AUTO", "WEBP", "AVIF"]}
+                  alt="Nombre de commentaires"
+                />
+                <p className="text-black opacity-50 font-normal font-sans-serif text-xxs m-0">
+                  {pageContext.post.commentCount
+                    ? pageContext.post.commentCount
+                    : 0}
+                </p>
+              </div>
+              <div className="w-7/12 flex flex-row flex-no-wrap items-center justify-end">
+                <p className="font-sans-serif text-rouille text-xs text-black m-0 mr-3">
+                  Partager ce post
+                </p>
+                <div className="flex flex-row flex-no-wrap">
+                  <StaticImage
+                    src="../images/instagram.svg"
+                    width={14}
+                    className=""
+                    quality={95}
+                    formats={["AUTO", "WEBP", "AVIF"]}
+                    alt="Instagram Logo"
+                  />
+                  <StaticImage
+                    src="../images/pinterest.svg"
+                    width={14}
+                    className="ml-2 mr-1"
+                    quality={95}
+                    formats={["AUTO", "WEBP", "AVIF"]}
+                    alt="Pinterest Logo"
+                  />
+                  <StaticImage
+                    src="../images/facebook.svg"
+                    width={14}
+                    className=""
+                    quality={95}
+                    formats={["AUTO", "WEBP", "AVIF"]}
+                    alt="Facebook Logo"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
           <div className="w-4/12 pl-20 my-9 flex flex-col">
             <div className="w-full bg-beige px-6">
