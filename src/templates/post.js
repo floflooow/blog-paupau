@@ -3,6 +3,7 @@ import * as React from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import parse, { domToReact } from "html-react-parser"
+import { graphql } from "gatsby"
 
 const formatStringToCamelCase = str => {
   const splitted = str.split("-")
@@ -29,7 +30,58 @@ const getStyleObjectFromString = str => {
   return style
 }
 
-const Post = ({ pageContext }) => {
+export const pageQuery = graphql`
+  query($slug: String) {
+    allWpPost(filter: { slug: { eq: $slug } }) {
+      nodes {
+        categories {
+          nodes {
+            name
+            slug
+          }
+        }
+        title
+        commentCount
+        commentStatus
+        comments {
+          nodes {
+            author {
+              node {
+                name
+              }
+            }
+            date(locale: "fr-FR", formatString: "DD  MMMM YYYY")
+          }
+        }
+        date(locale: "fr-FR", formatString: "DD  MMMM YYYY")
+        excerpt
+        content
+        slug
+        tags {
+          nodes {
+            name
+          }
+        }
+        featuredImage {
+          node {
+            localFile {
+              childImageSharp {
+                gatsbyImageData(
+                  jpgOptions: { quality: 100 }
+                  layout: FULL_WIDTH
+                )
+              }
+            }
+            altText
+          }
+        }
+      }
+    }
+  }
+`
+
+const Post = ({ data }) => {
+  let pageData = data.allWpPost.nodes[0]
   const options = {
     trim: true,
     replace: domNode => {
@@ -47,36 +99,27 @@ const Post = ({ pageContext }) => {
       }
       if (domNode.name === "h2") {
         return (
-          <h2
-            className="text-2xl text-black font-sans-serif font-bold mb-4"
-            href={domNode.attribs.href}
-          >
+          <h2 className="text-2xl text-black font-sans-serif font-bold mb-4">
             {domToReact(domNode.children, options)}
           </h2>
         )
       }
       if (domNode.name === "h3") {
         return (
-          <h3
-            className="text-xl text-black font-sans-serif font-bold mb-4"
-            href={domNode.attribs.href}
-          >
+          <h3 className="text-xl text-black font-sans-serif font-bold mb-4">
             {domToReact(domNode.children, options)}
           </h3>
         )
       }
       if (domNode.name === "h4") {
         return (
-          <h4
-            className="text-lg text-black font-sans-serif font-bold mb-4"
-            href={domNode.attribs.href}
-          >
+          <h4 className="text-lg text-black font-sans-serif font-bold mb-4">
             {domToReact(domNode.children, options)}
           </h4>
         )
       }
       if (domNode.name === "p") {
-        let className = domNode.attribs.class
+        let className = domNode.attribs?.class
         let alignement
         if (className && className.includes("has-text-align")) {
           alignement = className.split("-")[3]
@@ -107,7 +150,10 @@ const Post = ({ pageContext }) => {
       ) {
         let objectStyle = getStyleObjectFromString(domNode.attribs?.style)
         return (
-          <span style={objectStyle} className="h-full inline-block">
+          <span
+            style={objectStyle ? objectStyle : null}
+            className="h-full inline-block"
+          >
             {domToReact(domNode.children, options)}
           </span>
         )
@@ -142,7 +188,7 @@ const Post = ({ pageContext }) => {
         domNode.name === "ul" &&
         domNode.attribs?.class?.includes("blocks-gallery-grid")
       ) {
-        let numberOfColumns = domNode.parent.attribs.class.match(/(\d+)/)
+        let numberOfColumns = domNode.parent?.attribs?.class?.match(/(\d+)/)
         return (
           <ul
             className={`grid grid-cols-${
@@ -186,14 +232,14 @@ const Post = ({ pageContext }) => {
       <SEO title="Post" />
       <div className="flex flex-col w-9/12 mx-auto mt-12 mb-6">
         <p className="bg-beige text-xxs px-2 w-max text-rouille font-thin font-sans-serif m-0">
-          {pageContext.post.categories.nodes[0].name}
+          {pageData.categories.nodes[0].name}
         </p>
         <h2 className="text-4xl font-sans-serif font-bold text-black my-3">
-          {pageContext.post.title}
+          {pageData.title}
         </h2>
         <div className="flex flex-row flex-no-wrap justify-start items-center w-auto">
           <p className="text-black opacity-50 font-normal font-sans-serif text-xxs ml-0 mb-0 mt-0 mr-2">
-            {pageContext.post.date}
+            {pageData.date}
           </p>
           <div className="flex flex-row flex-no-wrap items-center">
             <StaticImage
@@ -206,25 +252,21 @@ const Post = ({ pageContext }) => {
               alt="Nombre de commentaires"
             />
             <p className="text-black opacity-50 font-normal font-sans-serif text-xxs m-0">
-              {pageContext.post.commentCount
-                ? pageContext.post.commentCount
-                : 0}
+              {pageData.commentCount ? pageData.commentCount : 0}
             </p>
           </div>
         </div>
         <div className="w-full flex flex-row flex-no-wrap">
           <div className="w-8/12 my-9 pr-20 flex flex-col border-r border-rouille border-opacity-20">
             <GatsbyImage
-              alt={pageContext.post.featuredImage.node.altText}
+              alt={pageData.featuredImage.node.altText}
               image={
-                pageContext.post.featuredImage.node.localFile.childImageSharp
+                pageData.featuredImage.node.localFile.childImageSharp
                   .gatsbyImageData
               }
             ></GatsbyImage>
             <div className="my-6 w-full">
-              {pageContext.post.content && (
-                <>{parse(pageContext.post.content, options)}</>
-              )}
+              {pageData.content && <>{parse(pageData.content, options)}</>}
             </div>
             <div className="w-full flex flex-row justify-between flex-no-wrap mt-12">
               <div className="w-5/12 flex flex-row flex-no-wrap items-center">
@@ -241,9 +283,7 @@ const Post = ({ pageContext }) => {
                   alt="Nombre de commentaires"
                 />
                 <p className="text-black opacity-50 font-normal font-sans-serif text-xxs m-0">
-                  {pageContext.post.commentCount
-                    ? pageContext.post.commentCount
-                    : 0}
+                  {pageData.commentCount ? pageData.commentCount : 0}
                 </p>
               </div>
               <div className="w-7/12 flex flex-row flex-no-wrap items-center justify-end">

@@ -123,6 +123,7 @@ exports.createPages = async ({ graphql, actions }) => {
       // as a GraphQL variable to query for this post's data.
       context: {
         post: post,
+        slug: post.slug,
       },
     })
   })
