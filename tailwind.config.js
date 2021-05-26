@@ -42,6 +42,7 @@ module.exports = {
       beige: "#FFEBD6",
       rouille: "#9a2f09",
       white: "#FFFFFF",
+      black: "#000000",
     },
   },
   variants: {
