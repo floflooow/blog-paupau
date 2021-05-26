@@ -20,12 +20,84 @@ export const pageQuery = graphql`
         commentStatus
         comments {
           nodes {
+            approved
             author {
               node {
                 name
               }
             }
-            date(locale: "fr-FR", formatString: "DD  MMMM YYYY")
+            content
+            date(formatString: "DD MMMM YYYY", locale: "fr-FR")
+            replies {
+              nodes {
+                approved
+                author {
+                  node {
+                    name
+                  }
+                }
+                content
+                date(formatString: "DD MMMM YYYY", locale: "fr-FR")
+                parentId
+                replies {
+                  nodes {
+                    approved
+                    author {
+                      node {
+                        name
+                      }
+                    }
+                    content
+                    date(formatString: "DD MMMM YYYY", locale: "fr-FR")
+                    parentId
+                    replies {
+                      nodes {
+                        approved
+                        author {
+                          node {
+                            name
+                          }
+                        }
+                        content
+                        date(formatString: "DD MMMM YYYY", locale: "fr-FR")
+                        parentId
+                        replies {
+                          nodes {
+                            approved
+                            author {
+                              node {
+                                name
+                              }
+                            }
+                            content
+                            date(formatString: "DD MMMM YYYY", locale: "fr-FR")
+                            parentId
+                            replies {
+                              nodes {
+                                approved
+                                author {
+                                  node {
+                                    name
+                                  }
+                                }
+                                content
+                                date(
+                                  formatString: "DD MMMM YYYY"
+                                  locale: "fr-FR"
+                                )
+                                parentId
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            id
+            parentId
           }
         }
         date(locale: "fr-FR", formatString: "DD  MMMM YYYY")
@@ -57,6 +129,7 @@ export const pageQuery = graphql`
 
 const Post = ({ data }) => {
   let pageData = data.allWpPost.nodes[0]
+  console.log(pageData)
   const options = {
     trim: true,
     replace: domNode => {
@@ -358,6 +431,174 @@ const Post = ({ data }) => {
                 alt="Facebook Logo"
               />
             </div>
+          </div>
+        </div>
+        <div className="w-full flex flex-row flex-no-wrap justify-between">
+          <div className="w-7/12">
+            <h3 className="text-rouille text-2xl font-sans-serif font-bold">
+              {pageData.commentCount
+                ? pageData.commentCount + " commentaires"
+                : 0 + " commentaires"}
+            </h3>
+            {pageData.comments.nodes.map(commentaire => {
+              if (
+                pageData.commentStatus === "open" &&
+                commentaire.approved === true &&
+                commentaire.parentId === null
+              ) {
+                return (
+                  <div className="w-11/12 flex flex-col border border-black border-opacity-20 px-4 py-3 my-3">
+                    <div className="w-full flex flex-row flex-no-wrap justify-between">
+                      <p className="text-rouille text-md font-medium font-sans-serif m-0">
+                        {commentaire.author.node.name}
+                      </p>
+                      <p className="text-xs font-thin font-sans-serif m-0">
+                        {commentaire.date}
+                      </p>
+                    </div>
+                    <div className="w-full mt-2">
+                      {commentaire.content && (
+                        <div className="text-xs font-light leading-tight font-sans-serif">
+                          {parse(commentaire.content)}
+                        </div>
+                      )}
+                    </div>
+                    <p className="cursor-pointer underline text-xxs font-bold opacity-50 font-sans-serif m-0 mb-2 -mt-3">
+                      Répondre à ce commentaire
+                    </p>
+                    {commentaire.replies.nodes.length > 0 ? (
+                      <>
+                        {commentaire.replies.nodes.map(replyComment => (
+                          <div className="w-full ml-2 flex flex-col border border-black border-opacity-20 px-4 py-3 my-1">
+                            <div className="w-full flex flex-row flex-no-wrap justify-between">
+                              <p className="text-rouille text-md font-medium font-sans-serif m-0">
+                                {replyComment.author.node.name}
+                              </p>
+                              <p className="text-xs font-thin font-sans-serif m-0">
+                                {replyComment.date}
+                              </p>
+                            </div>
+                            <div className="w-full mt-2">
+                              {replyComment.content && (
+                                <div className="text-xs font-light leading-tight font-sans-serif">
+                                  {parse(replyComment.content)}
+                                </div>
+                              )}
+                            </div>
+                            <p className="cursor-pointer underline text-xxs font-bold opacity-50 font-sans-serif m-0 mb-2 -mt-3">
+                              Répondre à ce commentaire
+                            </p>
+                            {replyComment.replies.nodes.length > 0 ? (
+                              <>
+                                {replyComment.replies.nodes.map(
+                                  replyReplyComment => (
+                                    <div className="w-full ml-2 flex flex-col border border-black border-opacity-20 px-4 py-3 my-1">
+                                      <div className="w-full flex flex-row flex-no-wrap justify-between">
+                                        <p className="text-rouille text-md font-medium font-sans-serif m-0">
+                                          {replyReplyComment.author.node.name}
+                                        </p>
+                                        <p className="text-xs font-thin font-sans-serif m-0">
+                                          {replyReplyComment.date}
+                                        </p>
+                                      </div>
+                                      <div className="w-full mt-2">
+                                        {replyReplyComment.content && (
+                                          <div className="text-xs font-light leading-tight font-sans-serif">
+                                            {parse(replyReplyComment.content)}
+                                          </div>
+                                        )}
+                                      </div>
+                                      <p className="cursor-pointer underline text-xxs font-bold opacity-50 font-sans-serif m-0 mb-2 -mt-3">
+                                        Répondre à ce commentaire
+                                      </p>
+                                      {replyReplyComment.replies.nodes.length >
+                                      0 ? (
+                                        <>
+                                          {replyReplyComment.replies.nodes.map(
+                                            replyReplyReplyComment => (
+                                              <div className="w-full ml-2 flex flex-col border border-black border-opacity-20 px-4 py-3 my-1">
+                                                <div className="w-full flex flex-row flex-no-wrap justify-between">
+                                                  <p className="text-rouille text-md font-medium font-sans-serif m-0">
+                                                    {
+                                                      replyReplyReplyComment
+                                                        .author.node.name
+                                                    }
+                                                  </p>
+                                                  <p className="text-xs font-thin font-sans-serif m-0">
+                                                    {
+                                                      replyReplyReplyComment.date
+                                                    }
+                                                  </p>
+                                                </div>
+                                                <div className="w-full mt-2">
+                                                  {replyReplyReplyComment.content && (
+                                                    <div className="text-xs font-light leading-tight font-sans-serif">
+                                                      {parse(
+                                                        replyReplyReplyComment.content
+                                                      )}
+                                                    </div>
+                                                  )}
+                                                </div>
+                                                <p className="cursor-pointer underline text-xxs font-bold opacity-50 font-sans-serif m-0 mb-2 -mt-3">
+                                                  Répondre à ce commentaire
+                                                </p>
+                                                {replyReplyReplyComment.replies
+                                                  .nodes.length > 0 ? (
+                                                  <>
+                                                    {replyReplyReplyComment.replies.nodes.map(
+                                                      replyReplyReplyReplyComment => (
+                                                        <div className="w-full ml-2 flex flex-col border border-black border-opacity-20 px-4 py-3 my-1">
+                                                          <div className="w-full flex flex-row flex-no-wrap justify-between">
+                                                            <p className="text-rouille text-md font-medium font-sans-serif m-0">
+                                                              {
+                                                                replyReplyReplyReplyComment
+                                                                  .author.node
+                                                                  .name
+                                                              }
+                                                            </p>
+                                                            <p className="text-xs font-thin font-sans-serif m-0">
+                                                              {
+                                                                replyReplyReplyReplyComment.date
+                                                              }
+                                                            </p>
+                                                          </div>
+                                                          <div className="w-full mt-2">
+                                                            {replyReplyReplyReplyComment.content && (
+                                                              <div className="text-xs font-light leading-tight font-sans-serif">
+                                                                {parse(
+                                                                  replyReplyReplyReplyComment.content
+                                                                )}
+                                                              </div>
+                                                            )}
+                                                          </div>
+                                                        </div>
+                                                      )
+                                                    )}
+                                                  </>
+                                                ) : null}
+                                              </div>
+                                            )
+                                          )}
+                                        </>
+                                      ) : null}
+                                    </div>
+                                  )
+                                )}
+                              </>
+                            ) : null}
+                          </div>
+                        ))}
+                      </>
+                    ) : null}
+                  </div>
+                )
+              }
+            })}
+          </div>
+          <div className="w-5/12">
+            <h3 className="text-rouille text-2xl font-sans-serif font-bold">
+              Ajouter un commentaire
+            </h3>
           </div>
         </div>
       </div>
