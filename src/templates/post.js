@@ -1,9 +1,9 @@
+import { graphql } from "gatsby"
 import { GatsbyImage, StaticImage } from "gatsby-plugin-image"
-import * as React from "react"
+import parse, { domToReact } from "html-react-parser"
+import React, { useState } from "react"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
-import parse, { domToReact } from "html-react-parser"
-import { graphql } from "gatsby"
 
 export const pageQuery = graphql`
   query($slug: String) {
@@ -18,6 +18,7 @@ export const pageQuery = graphql`
         title
         commentCount
         commentStatus
+        databaseId
         comments {
           nodes {
             approved
@@ -27,6 +28,7 @@ export const pageQuery = graphql`
               }
             }
             content
+            databaseId
             date(formatString: "DD MMMM YYYY", locale: "fr-FR")
             replies {
               nodes {
@@ -37,8 +39,8 @@ export const pageQuery = graphql`
                   }
                 }
                 content
+                databaseId
                 date(formatString: "DD MMMM YYYY", locale: "fr-FR")
-                parentId
                 replies {
                   nodes {
                     approved
@@ -48,8 +50,8 @@ export const pageQuery = graphql`
                       }
                     }
                     content
+                    databaseId
                     date(formatString: "DD MMMM YYYY", locale: "fr-FR")
-                    parentId
                     replies {
                       nodes {
                         approved
@@ -59,8 +61,8 @@ export const pageQuery = graphql`
                           }
                         }
                         content
+                        databaseId
                         date(formatString: "DD MMMM YYYY", locale: "fr-FR")
-                        parentId
                         replies {
                           nodes {
                             approved
@@ -70,8 +72,8 @@ export const pageQuery = graphql`
                               }
                             }
                             content
+                            databaseId
                             date(formatString: "DD MMMM YYYY", locale: "fr-FR")
-                            parentId
                             replies {
                               nodes {
                                 approved
@@ -85,7 +87,6 @@ export const pageQuery = graphql`
                                   formatString: "DD MMMM YYYY"
                                   locale: "fr-FR"
                                 )
-                                parentId
                               }
                             }
                           }
@@ -129,7 +130,71 @@ export const pageQuery = graphql`
 
 const Post = ({ data }) => {
   let pageData = data.allWpPost.nodes[0]
-  console.log(pageData)
+  let postId = pageData.databaseId
+  let commentsEndpoint = "http://larmoiredepaupau.ovh/wp-json/wp/v2/comments"
+  const [userName, setUserName] = useState("")
+  const [email, setEmail] = useState("")
+  const [message, setMessage] = useState("")
+  const [commentStatus, setCommentStatus] = useState(false)
+  const [firstIndexReply, setFirstIndexReply] = useState(false)
+  const [secondIndexReply, setSecondIndexReply] = useState(false)
+  const [thirdIndexReply, setThirdIndexReply] = useState(false)
+  const [fourthIndexReply, setFourthIndexReply] = useState(false)
+  const createComment = () => {
+    // Trying to avoid double clicks here.
+    if (commentStatus === "loading") {
+      return // don't send this twice.
+    }
+
+    // This is a POST request to the comments endpoint. The body is sent as a JSON string.
+    // Once the response is received, we set the comment status accordingly.
+    fetch(commentsEndpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        author_email: email,
+        author_name: userName,
+        post: postId,
+        content: message,
+      }),
+    }).then(response => {
+      if (response.status === 201) {
+        setCommentStatus("success")
+      } else {
+        setCommentStatus("error")
+      }
+    })
+  }
+  const createCommentReply = parentId => {
+    // Trying to avoid double clicks here.
+    if (commentStatus === "loading") {
+      return // don't send this twice.
+    }
+
+    // This is a POST request to the comments endpoint. The body is sent as a JSON string.
+    // Once the response is received, we set the comment status accordingly.
+    fetch(commentsEndpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        author_email: email,
+        author_name: userName,
+        post: postId,
+        content: message,
+        parent: parentId,
+      }),
+    }).then(response => {
+      if (response.status === 201) {
+        setCommentStatus("success")
+      } else {
+        setCommentStatus("error")
+      }
+    })
+  }
   const options = {
     trim: true,
     replace: domNode => {
@@ -267,7 +332,6 @@ const Post = ({ data }) => {
         )
       }
       if (domNode.name === "img" && !domNode.attribs["aria-hidden"]) {
-        console.log(domNode.attribs)
         return (
           <img
             className="w-full h-full object-cover object-center"
@@ -292,7 +356,7 @@ const Post = ({ data }) => {
   return (
     <Layout>
       <SEO title="Post" />
-      <div className="flex flex-col w-9/12 mx-auto mt-12 mb-6">
+      <div className="flex flex-col w-10/12 mx-auto mt-12 mb-6">
         <p className="bg-beige text-xxs px-2 w-max text-rouille font-thin font-sans-serif m-0">
           {pageData.categories.nodes[0].name}
         </p>
@@ -440,14 +504,17 @@ const Post = ({ data }) => {
                 ? pageData.commentCount + " commentaires"
                 : 0 + " commentaires"}
             </h3>
-            {pageData.comments.nodes.map(commentaire => {
+            {pageData.comments.nodes.map((commentaire, index) => {
               if (
                 pageData.commentStatus === "open" &&
                 commentaire.approved === true &&
                 commentaire.parentId === null
               ) {
                 return (
-                  <div className="w-11/12 flex flex-col border border-black border-opacity-20 px-4 py-3 my-3">
+                  <div
+                    key={index}
+                    className="w-11/12 flex flex-col border border-black border-opacity-20 px-4 py-3 my-3"
+                  >
                     <div className="w-full flex flex-row flex-no-wrap justify-between">
                       <p className="text-rouille text-md font-medium font-sans-serif m-0">
                         {commentaire.author.node.name}
@@ -463,142 +530,542 @@ const Post = ({ data }) => {
                         </div>
                       )}
                     </div>
-                    <p className="cursor-pointer underline text-xxs font-bold opacity-50 font-sans-serif m-0 mb-2 -mt-3">
+                    <button
+                      onClick={() => {
+                        setFirstIndexReply(commentaire.databaseId)
+                        setSecondIndexReply(false)
+                        setThirdIndexReply(false)
+                        setFourthIndexReply(false)
+                      }}
+                      className="cursor-pointer inline text-left underline text-xxs font-bold opacity-50 font-sans-serif m-0 mb-6 -mt-3"
+                    >
                       Répondre à ce commentaire
-                    </p>
+                    </button>
+                    {firstIndexReply === commentaire.databaseId ? (
+                      <form
+                        className="w-full relative"
+                        onSubmit={e => {
+                          e.preventDefault()
+                          setCommentStatus("loading")
+                        }}
+                      >
+                        <input type="hidden" name="botField" />
+                        <div className="field">
+                          <input
+                            type="text"
+                            name={`userName${firstIndexReply}`}
+                            placeholder="Nom"
+                            id={`userName${firstIndexReply}`}
+                            value={userName}
+                            className="w-full border border-black border-opacity-25 px-4 py-3 mb-1"
+                            onChange={e => setUserName(e.target.value)}
+                          />
+                        </div>
+                        <div className="field">
+                          <input
+                            type="text"
+                            name={`email${firstIndexReply}`}
+                            id={`email${firstIndexReply}`}
+                            placeholder="Email"
+                            value={email}
+                            className="w-full border border-black border-opacity-25 px-4 py-3 my-1"
+                            onChange={e => setEmail(e.target.value)}
+                          />
+                        </div>
+                        <div className="field">
+                          <textarea
+                            name={`message${firstIndexReply}`}
+                            id={`message${firstIndexReply}`}
+                            rows="6"
+                            placeholder="Votre commentaire"
+                            value={message}
+                            className="w-full border border-black border-opacity-25 px-4 py-3 my-1"
+                            onChange={e => setMessage(e.target.value)}
+                          />
+                        </div>
+                        <input
+                          className="w-full mt-2 bg-white text-sm text-rouille font-thin font-serif hoverBorder"
+                          type="submit"
+                          onClick={() =>
+                            createCommentReply(commentaire.databaseId)
+                          }
+                          value="Envoyer"
+                        />
+                        <button
+                          onClick={() => setFirstIndexReply(false)}
+                          className="cursor-pointer text-rouille font-sans-serif font-thin absolute -top-6 right-0"
+                        >
+                          X
+                        </button>
+                      </form>
+                    ) : null}
                     {commentaire.replies.nodes.length > 0 ? (
                       <>
-                        {commentaire.replies.nodes.map(replyComment => (
-                          <div className="w-full ml-2 flex flex-col border border-black border-opacity-20 px-4 py-3 my-1">
-                            <div className="w-full flex flex-row flex-no-wrap justify-between">
-                              <p className="text-rouille text-md font-medium font-sans-serif m-0">
-                                {replyComment.author.node.name}
-                              </p>
-                              <p className="text-xs font-thin font-sans-serif m-0">
-                                {replyComment.date}
-                              </p>
-                            </div>
-                            <div className="w-full mt-2">
-                              {replyComment.content && (
-                                <div className="text-xs font-light leading-tight font-sans-serif">
-                                  {parse(replyComment.content)}
-                                </div>
-                              )}
-                            </div>
-                            <p className="cursor-pointer underline text-xxs font-bold opacity-50 font-sans-serif m-0 mb-2 -mt-3">
-                              Répondre à ce commentaire
-                            </p>
-                            {replyComment.replies.nodes.length > 0 ? (
-                              <>
-                                {replyComment.replies.nodes.map(
-                                  replyReplyComment => (
-                                    <div className="w-full ml-2 flex flex-col border border-black border-opacity-20 px-4 py-3 my-1">
-                                      <div className="w-full flex flex-row flex-no-wrap justify-between">
-                                        <p className="text-rouille text-md font-medium font-sans-serif m-0">
-                                          {replyReplyComment.author.node.name}
-                                        </p>
-                                        <p className="text-xs font-thin font-sans-serif m-0">
-                                          {replyReplyComment.date}
-                                        </p>
-                                      </div>
-                                      <div className="w-full mt-2">
-                                        {replyReplyComment.content && (
-                                          <div className="text-xs font-light leading-tight font-sans-serif">
-                                            {parse(replyReplyComment.content)}
-                                          </div>
-                                        )}
-                                      </div>
-                                      <p className="cursor-pointer underline text-xxs font-bold opacity-50 font-sans-serif m-0 mb-2 -mt-3">
-                                        Répondre à ce commentaire
-                                      </p>
-                                      {replyReplyComment.replies.nodes.length >
-                                      0 ? (
-                                        <>
-                                          {replyReplyComment.replies.nodes.map(
-                                            replyReplyReplyComment => (
-                                              <div className="w-full ml-2 flex flex-col border border-black border-opacity-20 px-4 py-3 my-1">
-                                                <div className="w-full flex flex-row flex-no-wrap justify-between">
-                                                  <p className="text-rouille text-md font-medium font-sans-serif m-0">
-                                                    {
-                                                      replyReplyReplyComment
-                                                        .author.node.name
-                                                    }
-                                                  </p>
-                                                  <p className="text-xs font-thin font-sans-serif m-0">
-                                                    {
-                                                      replyReplyReplyComment.date
-                                                    }
-                                                  </p>
-                                                </div>
-                                                <div className="w-full mt-2">
-                                                  {replyReplyReplyComment.content && (
-                                                    <div className="text-xs font-light leading-tight font-sans-serif">
-                                                      {parse(
-                                                        replyReplyReplyComment.content
-                                                      )}
-                                                    </div>
-                                                  )}
-                                                </div>
-                                                <p className="cursor-pointer underline text-xxs font-bold opacity-50 font-sans-serif m-0 mb-2 -mt-3">
-                                                  Répondre à ce commentaire
-                                                </p>
-                                                {replyReplyReplyComment.replies
-                                                  .nodes.length > 0 ? (
-                                                  <>
-                                                    {replyReplyReplyComment.replies.nodes.map(
-                                                      replyReplyReplyReplyComment => (
-                                                        <div className="w-full ml-2 flex flex-col border border-black border-opacity-20 px-4 py-3 my-1">
-                                                          <div className="w-full flex flex-row flex-no-wrap justify-between">
-                                                            <p className="text-rouille text-md font-medium font-sans-serif m-0">
-                                                              {
-                                                                replyReplyReplyReplyComment
-                                                                  .author.node
-                                                                  .name
-                                                              }
-                                                            </p>
-                                                            <p className="text-xs font-thin font-sans-serif m-0">
-                                                              {
-                                                                replyReplyReplyReplyComment.date
-                                                              }
-                                                            </p>
-                                                          </div>
-                                                          <div className="w-full mt-2">
-                                                            {replyReplyReplyReplyComment.content && (
-                                                              <div className="text-xs font-light leading-tight font-sans-serif">
-                                                                {parse(
-                                                                  replyReplyReplyReplyComment.content
-                                                                )}
-                                                              </div>
-                                                            )}
-                                                          </div>
-                                                        </div>
-                                                      )
-                                                    )}
-                                                  </>
-                                                ) : null}
-                                              </div>
-                                            )
-                                          )}
-                                        </>
-                                      ) : null}
-                                    </div>
-                                  )
+                        {commentaire.replies.nodes.map(
+                          (replyComment, firstKey) => (
+                            <div
+                              key={firstKey}
+                              className="w-full ml-2 flex flex-col border border-black border-opacity-20 px-4 py-3 my-1"
+                            >
+                              <div className="w-full flex flex-row flex-no-wrap justify-between">
+                                <p className="text-rouille text-md font-medium font-sans-serif m-0">
+                                  {replyComment.author.node.name}
+                                </p>
+                                <p className="text-xs font-thin font-sans-serif m-0">
+                                  {replyComment.date}
+                                </p>
+                              </div>
+                              <div className="w-full mt-2">
+                                {replyComment.content && (
+                                  <div className="text-xs font-light leading-tight font-sans-serif">
+                                    {parse(replyComment.content)}
+                                  </div>
                                 )}
-                              </>
-                            ) : null}
-                          </div>
-                        ))}
+                              </div>
+                              <button
+                                onClick={() => {
+                                  setFirstIndexReply(false)
+                                  setSecondIndexReply(replyComment.databaseId)
+                                  setThirdIndexReply(false)
+                                  setFourthIndexReply(false)
+                                }}
+                                className="cursor-pointer inline text-left underline text-xxs font-bold opacity-50 font-sans-serif m-0 mb-6 -mt-3"
+                              >
+                                Répondre à ce commentaire
+                              </button>
+                              {secondIndexReply === replyComment.databaseId ? (
+                                <form
+                                  className="w-full relative"
+                                  onSubmit={e => {
+                                    e.preventDefault()
+                                    setCommentStatus("loading")
+                                  }}
+                                >
+                                  <input type="hidden" name="botField" />
+                                  <div className="field">
+                                    <input
+                                      type="text"
+                                      name={`userName${secondIndexReply}`}
+                                      placeholder="Nom"
+                                      id={`userName${secondIndexReply}`}
+                                      value={userName}
+                                      className="w-full border border-black border-opacity-25 px-4 py-3 mb-1"
+                                      onChange={e =>
+                                        setUserName(e.target.value)
+                                      }
+                                    />
+                                  </div>
+                                  <div className="field">
+                                    <input
+                                      type="text"
+                                      name={`email${secondIndexReply}`}
+                                      id={`email${secondIndexReply}`}
+                                      placeholder="Email"
+                                      value={email}
+                                      className="w-full border border-black border-opacity-25 px-4 py-3 my-1"
+                                      onChange={e => setEmail(e.target.value)}
+                                    />
+                                  </div>
+                                  <div className="field">
+                                    <textarea
+                                      name={`message${secondIndexReply}`}
+                                      id={`message${secondIndexReply}`}
+                                      rows="6"
+                                      placeholder="Votre commentaire"
+                                      value={message}
+                                      className="w-full border border-black border-opacity-25 px-4 py-3 my-1"
+                                      onChange={e => setMessage(e.target.value)}
+                                    />
+                                  </div>
+                                  <input
+                                    className="w-full mt-2 bg-white text-sm text-rouille font-thin font-serif hoverBorder"
+                                    type="submit"
+                                    onClick={() =>
+                                      createCommentReply(
+                                        replyComment.databaseId
+                                      )
+                                    }
+                                    value="Envoyer"
+                                  />
+                                  <button
+                                    onClick={() => setSecondIndexReply(false)}
+                                    className="cursor-pointer text-rouille font-sans-serif font-thin absolute -top-6 right-0"
+                                  >
+                                    X
+                                  </button>
+                                </form>
+                              ) : null}
+                              {replyComment.replies.nodes.length > 0 ? (
+                                <>
+                                  {replyComment.replies.nodes.map(
+                                    (replyReplyComment, secondKey) => (
+                                      <div
+                                        key={secondKey}
+                                        className="w-full ml-2 flex flex-col border border-black border-opacity-20 px-4 py-3 my-1"
+                                      >
+                                        <div className="w-full flex flex-row flex-no-wrap justify-between">
+                                          <p className="text-rouille text-md font-medium font-sans-serif m-0">
+                                            {replyReplyComment.author.node.name}
+                                          </p>
+                                          <p className="text-xs font-thin font-sans-serif m-0">
+                                            {replyReplyComment.date}
+                                          </p>
+                                        </div>
+                                        <div className="w-full mt-2">
+                                          {replyReplyComment.content && (
+                                            <div className="text-xs font-light leading-tight font-sans-serif">
+                                              {parse(replyReplyComment.content)}
+                                            </div>
+                                          )}
+                                        </div>
+                                        <button
+                                          onClick={() => {
+                                            setFirstIndexReply(false)
+                                            setSecondIndexReply(false)
+                                            setThirdIndexReply(
+                                              replyReplyComment.databaseId
+                                            )
+                                            setFourthIndexReply(false)
+                                          }}
+                                          className="cursor-pointer underline inline text-left text-xxs font-bold opacity-50 font-sans-serif m-0 mb-6 -mt-3"
+                                        >
+                                          Répondre à ce commentaire
+                                        </button>
+                                        {thirdIndexReply ===
+                                        replyReplyComment.databaseId ? (
+                                          <form
+                                            className="w-full relative"
+                                            onSubmit={e => {
+                                              e.preventDefault()
+                                              setCommentStatus("loading")
+                                            }}
+                                          >
+                                            <input
+                                              type="hidden"
+                                              name="botField"
+                                            />
+                                            <div className="field">
+                                              <input
+                                                type="text"
+                                                name={`userName${thirdIndexReply}`}
+                                                placeholder="Nom"
+                                                id={`userName${thirdIndexReply}`}
+                                                value={userName}
+                                                className="w-full border border-black border-opacity-25 px-4 py-3 mb-1"
+                                                onChange={e =>
+                                                  setUserName(e.target.value)
+                                                }
+                                              />
+                                            </div>
+                                            <div className="field">
+                                              <input
+                                                type="text"
+                                                name={`email${thirdIndexReply}`}
+                                                id={`email${thirdIndexReply}`}
+                                                placeholder="Email"
+                                                value={email}
+                                                className="w-full border border-black border-opacity-25 px-4 py-3 my-1"
+                                                onChange={e =>
+                                                  setEmail(e.target.value)
+                                                }
+                                              />
+                                            </div>
+                                            <div className="field">
+                                              <textarea
+                                                name={`message${thirdIndexReply}`}
+                                                id={`message${thirdIndexReply}`}
+                                                rows="6"
+                                                placeholder="Votre commentaire"
+                                                value={message}
+                                                className="w-full border border-black border-opacity-25 px-4 py-3 my-1"
+                                                onChange={e =>
+                                                  setMessage(e.target.value)
+                                                }
+                                              />
+                                            </div>
+                                            <input
+                                              className="w-full mt-2 bg-white text-sm text-rouille font-thin font-serif hoverBorder"
+                                              type="submit"
+                                              onClick={() =>
+                                                createCommentReply(
+                                                  replyReplyComment.databaseId
+                                                )
+                                              }
+                                              value="Envoyer"
+                                            />
+                                            <button
+                                              onClick={() =>
+                                                setThirdIndexReply(false)
+                                              }
+                                              className="cursor-pointer text-rouille font-sans-serif font-thin absolute -top-6 right-0"
+                                            >
+                                              X
+                                            </button>
+                                          </form>
+                                        ) : null}
+                                        {replyReplyComment.replies.nodes
+                                          .length > 0 ? (
+                                          <>
+                                            {replyReplyComment.replies.nodes.map(
+                                              (
+                                                replyReplyReplyComment,
+                                                thirdKey
+                                              ) => (
+                                                <div
+                                                  key={thirdKey}
+                                                  className="w-full ml-2 flex flex-col border border-black border-opacity-20 px-4 py-3 my-1"
+                                                >
+                                                  <div className="w-full flex flex-row flex-no-wrap justify-between">
+                                                    <p className="text-rouille text-md font-medium font-sans-serif m-0">
+                                                      {
+                                                        replyReplyReplyComment
+                                                          .author.node.name
+                                                      }
+                                                    </p>
+                                                    <p className="text-xs font-thin font-sans-serif m-0">
+                                                      {
+                                                        replyReplyReplyComment.date
+                                                      }
+                                                    </p>
+                                                  </div>
+                                                  <div className="w-full mt-2">
+                                                    {replyReplyReplyComment.content && (
+                                                      <div className="text-xs font-light leading-tight font-sans-serif">
+                                                        {parse(
+                                                          replyReplyReplyComment.content
+                                                        )}
+                                                      </div>
+                                                    )}
+                                                  </div>
+                                                  <button
+                                                    onClick={() => {
+                                                      setFirstIndexReply(false)
+                                                      setSecondIndexReply(false)
+                                                      setThirdIndexReply(false)
+                                                      setFourthIndexReply(
+                                                        replyReplyReplyComment.databaseId
+                                                      )
+                                                    }}
+                                                    className="cursor-pointer underline inline text-left text-xxs font-bold opacity-50 font-sans-serif m-0 mb-6 -mt-3"
+                                                  >
+                                                    Répondre à ce commentaire
+                                                  </button>
+                                                  {fourthIndexReply ===
+                                                  replyReplyReplyComment.databaseId ? (
+                                                    <form
+                                                      className="w-full relative"
+                                                      onSubmit={e => {
+                                                        e.preventDefault()
+                                                        setCommentStatus(
+                                                          "loading"
+                                                        )
+                                                      }}
+                                                    >
+                                                      <input
+                                                        type="hidden"
+                                                        name="botField"
+                                                      />
+                                                      <div className="field">
+                                                        <input
+                                                          type="text"
+                                                          name={`userName${fourthIndexReply}`}
+                                                          placeholder="Nom"
+                                                          id={`userName${fourthIndexReply}`}
+                                                          value={userName}
+                                                          className="w-full border border-black border-opacity-25 px-4 py-3 mb-1"
+                                                          onChange={e =>
+                                                            setUserName(
+                                                              e.target.value
+                                                            )
+                                                          }
+                                                        />
+                                                      </div>
+                                                      <div className="field">
+                                                        <input
+                                                          type="text"
+                                                          name={`email${fourthIndexReply}`}
+                                                          id={`email${fourthIndexReply}`}
+                                                          placeholder="Email"
+                                                          value={email}
+                                                          className="w-full border border-black border-opacity-25 px-4 py-3 my-1"
+                                                          onChange={e =>
+                                                            setEmail(
+                                                              e.target.value
+                                                            )
+                                                          }
+                                                        />
+                                                      </div>
+                                                      <div className="field">
+                                                        <textarea
+                                                          name={`message${fourthIndexReply}`}
+                                                          id={`message${fourthIndexReply}`}
+                                                          rows="6"
+                                                          placeholder="Votre commentaire"
+                                                          value={message}
+                                                          className="w-full border border-black border-opacity-25 px-4 py-3 my-1"
+                                                          onChange={e =>
+                                                            setMessage(
+                                                              e.target.value
+                                                            )
+                                                          }
+                                                        />
+                                                      </div>
+                                                      <input
+                                                        className="w-full mt-2 bg-white text-sm text-rouille font-thin font-serif hoverBorder"
+                                                        type="submit"
+                                                        onClick={() =>
+                                                          createCommentReply(
+                                                            replyReplyReplyComment.databaseId
+                                                          )
+                                                        }
+                                                        value="Envoyer"
+                                                      />
+                                                      <button
+                                                        onClick={() =>
+                                                          setFourthIndexReply(
+                                                            false
+                                                          )
+                                                        }
+                                                        className="cursor-pointer text-rouille font-sans-serif font-thin absolute -top-6 right-0"
+                                                      >
+                                                        X
+                                                      </button>
+                                                    </form>
+                                                  ) : null}
+                                                  {replyReplyReplyComment
+                                                    .replies.nodes.length >
+                                                  0 ? (
+                                                    <>
+                                                      {replyReplyReplyComment.replies.nodes.map(
+                                                        (
+                                                          replyReplyReplyReplyComment,
+                                                          fourthKey
+                                                        ) => (
+                                                          <div
+                                                            key={fourthKey}
+                                                            className="w-full ml-2 flex flex-col border border-black border-opacity-20 px-4 py-3 my-1"
+                                                          >
+                                                            <div className="w-full flex flex-row flex-no-wrap justify-between">
+                                                              <p className="text-rouille text-md font-medium font-sans-serif m-0">
+                                                                {
+                                                                  replyReplyReplyReplyComment
+                                                                    .author.node
+                                                                    .name
+                                                                }
+                                                              </p>
+                                                              <p className="text-xs font-thin font-sans-serif m-0">
+                                                                {
+                                                                  replyReplyReplyReplyComment.date
+                                                                }
+                                                              </p>
+                                                            </div>
+                                                            <div className="w-full mt-2">
+                                                              {replyReplyReplyReplyComment.content && (
+                                                                <div className="text-xs font-light leading-tight font-sans-serif">
+                                                                  {parse(
+                                                                    replyReplyReplyReplyComment.content
+                                                                  )}
+                                                                </div>
+                                                              )}
+                                                            </div>
+                                                          </div>
+                                                        )
+                                                      )}
+                                                    </>
+                                                  ) : null}
+                                                </div>
+                                              )
+                                            )}
+                                          </>
+                                        ) : null}
+                                      </div>
+                                    )
+                                  )}
+                                </>
+                              ) : null}
+                            </div>
+                          )
+                        )}
                       </>
                     ) : null}
                   </div>
                 )
+              } else {
+                return null
               }
             })}
           </div>
-          <div className="w-5/12">
+          <div className="w-5/12 flex flex-col">
             <h3 className="text-rouille text-2xl font-sans-serif font-bold">
               Ajouter un commentaire
             </h3>
+            {firstIndexReply !== false ||
+            secondIndexReply !== false ||
+            thirdIndexReply !== false ||
+            fourthIndexReply !== false ? null : (
+              <form
+                className="w-full"
+                onSubmit={e => {
+                  e.preventDefault()
+                  setCommentStatus("loading")
+                }}
+              >
+                <input type="hidden" name="botField" />
+                <div className="field">
+                  <input
+                    type="text"
+                    name="userName"
+                    placeholder="Nom"
+                    id="userName"
+                    value={userName}
+                    className="w-full border border-black border-opacity-25 px-4 py-3 mb-1"
+                    onChange={e => setUserName(e.target.value)}
+                  />
+                </div>
+                <div className="field">
+                  <input
+                    type="text"
+                    name="email"
+                    id="email"
+                    placeholder="Email"
+                    value={email}
+                    className="w-full border border-black border-opacity-25 px-4 py-3 my-1"
+                    onChange={e => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="field">
+                  <textarea
+                    name="message"
+                    id="message"
+                    rows="6"
+                    placeholder="Votre commentaire"
+                    value={message}
+                    className="w-full border border-black border-opacity-25 px-4 py-3 my-1"
+                    onChange={e => setMessage(e.target.value)}
+                  />
+                </div>
+                <input
+                  className="w-full mt-2 bg-white text-sm text-rouille font-thin font-serif hoverBorder"
+                  type="submit"
+                  onClick={createComment}
+                  value="Envoyer"
+                />
+              </form>
+            )}
+
+            {commentStatus === "success" ? (
+              <p>
+                Votre commentaire à bien été envoyé. Il doit maintenant être
+                validé afin d'apparaître sur le site.
+              </p>
+            ) : commentStatus === "loading" ? (
+              <p>Votre commentaire est en cours d'envoi.</p>
+            ) : commentStatus === "error" ? (
+              <p>
+                Il y a eu une erreur lors de l&apos;envoi, veuillez réessayer
+                plus tard.
+              </p>
+            ) : null}
           </div>
         </div>
       </div>
