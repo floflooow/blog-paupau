@@ -131,7 +131,7 @@ export const pageQuery = graphql`
 const Post = ({ data }) => {
   let pageData = data.allWpPost.nodes[0]
   let postId = pageData.databaseId
-  let commentsEndpoint = "http://larmoiredepaupau.ovh/wp-json/wp/v2/comments"
+  let commentsEndpoint = "https://larmoiredepaupau.ovh/wp-json/wp/v2/comments"
   const [userName, setUserName] = useState("")
   const [email, setEmail] = useState("")
   const [message, setMessage] = useState("")

@@ -32,7 +32,7 @@ module.exports = {
     {
       resolve: `gatsby-source-wordpress`,
       options: {
-        url: `http://larmoiredepaupau.ovh/graphql`,
+        url: `https://larmoiredepaupau.ovh/graphql`,
       },
     },
     `gatsby-plugin-gatsby-cloud`,
