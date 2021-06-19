@@ -3,7 +3,7 @@ import { GatsbyImage, StaticImage } from "gatsby-plugin-image"
 import parse, { domToReact } from "html-react-parser"
 import React, { useState } from "react"
 import Layout from "../components/layout"
-import SEO from "../components/seo"
+import Seo from "../components/seo"
 
 export const pageQuery = graphql`
   query($slug: String) {
@@ -422,7 +422,7 @@ const Post = ({ data }) => {
   }
   return (
     <Layout>
-      <SEO title="Post" />
+      <Seo title="Post" />
       {pageData.categories.nodes[0].slug === "outfits" ? (
         <>
           <div className="flex flex-col sm:w-9/12 w-full mx-auto mt-12 mb-6">
@@ -615,7 +615,7 @@ const Post = ({ data }) => {
                   <div className="w-10/12 mx-auto flex flex-col pt-6 pb-4">
                     <StaticImage
                       src="../images/paupau_presentation.jpg"
-                      height={160}
+                      height={190}
                       className="rounded-full"
                       quality={100}
                       formats={["AUTO", "WEBP", "AVIF"]}

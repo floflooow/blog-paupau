@@ -2,7 +2,7 @@ import { graphql, Link } from "gatsby"
 import { GatsbyImage, StaticImage } from "gatsby-plugin-image"
 import React, { useState } from "react"
 import Layout from "../components/layout"
-import SEO from "../components/seo"
+import Seo from "../components/seo"
 import parse, { domToReact } from "html-react-parser"
 
 export const pageQuery = graphql`
@@ -74,7 +74,7 @@ const Posts = ({ data, pageContext }) => {
   if (pageContext.slug === "wishlist") {
     return (
       <Layout>
-        <SEO title="Listings" />
+        <Seo title="Listings" />
         <h2 className="text-4xl font-sans-serif font-thin text-left text-rouille m-0">
           Ma wishlist
         </h2>
@@ -184,7 +184,7 @@ const Posts = ({ data, pageContext }) => {
   } else if (pageContext.slug === "derniers-achats") {
     return (
       <Layout>
-        <SEO title="Listings" />
+        <Seo title="Listings" />
         <h2 className="text-4xl font-sans-serif font-thin text-left text-rouille m-0">
           Mes derniers achats
         </h2>
@@ -294,7 +294,7 @@ const Posts = ({ data, pageContext }) => {
   } else {
     return (
       <Layout>
-        <SEO title="Listings" />
+        <Seo title="Listings" />
         <h2 className="text-4xl font-sans-serif font-thin text-center text-rouille m-0">
           {pageContext.name}
         </h2>

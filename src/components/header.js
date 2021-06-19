@@ -7,12 +7,18 @@ const Header = () => {
   return (
     <>
       <div className="w-full flex flex-row flex-no-wrap justify-end items-center bg-beige bg-opacity-75 px-9">
-        <p className="font-serif text-xxs font-light text-rouille mr-2 mb-0">
+        <Link
+          to="/a-propos"
+          className="font-serif text-xxs font-light text-rouille mr-2 mb-0"
+        >
           À propos
-        </p>
-        <p className="font-serif text-xxs font-light text-rouille mr-2 mb-0">
+        </Link>
+        <Link
+          to="/archives"
+          className="font-serif text-xxs font-light text-rouille mr-2 mb-0"
+        >
           Archives
-        </p>
+        </Link>
         <p className="font-serif text-xxs font-light text-rouille mr-2 mb-0">
           S'inscrire à la newsletter
         </p>
@@ -109,9 +115,10 @@ const Header = () => {
           </Link>
           <p className="mb-1 opacity-25">&#124;</p>
           <div className="cursor-pointer">
-            <p
+            <button
               onMouseLeave={() => setSousMenu(false)}
               onMouseOver={() => setSousMenu(true)}
+              onFocus={() => setSousMenu(true)}
               className="relative text-black font-sans-serif text-xs uppercase mb-0"
             >
               Shopping
@@ -131,7 +138,7 @@ const Header = () => {
                   </Link>
                 </div>
               )}
-            </p>
+            </button>
           </div>
           <Link to="/mode">
             <p className="text-black font-sans-serif text-xs uppercase mb-0">
