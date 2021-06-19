@@ -23,6 +23,9 @@ module.exports = {
       "sans-serif": ["Helvetica", "sans-serif"],
     },
     extend: {
+      inset: {
+        "-140%": "-140%",
+      },
       width: {
         "49/100": "49%",
         "30/100": "30%",
