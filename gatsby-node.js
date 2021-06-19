@@ -84,7 +84,16 @@ exports.createPages = async ({ graphql, actions }) => {
       allWpCategory(
         filter: {
           slug: {
-            in: ["mode", "lifestyle", "voyages", "food", "beaute", "outfits"]
+            in: [
+              "mode"
+              "lifestyle"
+              "voyages"
+              "food"
+              "beaute"
+              "outfits"
+              "wishlist"
+              "derniers-achats"
+            ]
           }
         }
       ) {
