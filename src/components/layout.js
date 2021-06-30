@@ -13,15 +13,19 @@ const Layout = ({ children }) => {
           title
         }
       }
+      localSearchAllContent {
+        index
+        store
+      }
     }
   `)
-
   return (
     <div className="relative w-full min-h-screen">
-      <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
-      <div className="px-9 mt-6 mb-12">
-        <main>{children}</main>
-      </div>
+      <Header
+        layoutChildren={children}
+        searchData={data.localSearchAllContent}
+        siteTitle={data.site.siteMetadata?.title || `Title`}
+      ></Header>
       <Footer />
     </div>
   )

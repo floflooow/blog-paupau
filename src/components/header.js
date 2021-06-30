@@ -1,9 +1,14 @@
 import React, { useState } from "react"
 import { Link } from "gatsby"
-import { StaticImage } from "gatsby-plugin-image"
+import { StaticImage, GatsbyImage } from "gatsby-plugin-image"
+import { useFlexSearch } from "react-use-flexsearch"
 
-const Header = () => {
+const Header = ({ searchData, layoutChildren }) => {
   const [sousMenu, setSousMenu] = useState(false)
+  const [searchActive, setSearchActive] = useState(false)
+  const [query, setQuery] = useState(null)
+  const results = useFlexSearch(query, searchData.index, searchData.store)
+  console.log(results)
   return (
     <>
       <div className="w-full flex flex-row flex-no-wrap justify-end items-center bg-beige bg-opacity-75 px-9">
@@ -61,7 +66,11 @@ const Header = () => {
             />
           </Link>
         </div>
-        <div className="w-5/12 flex flex-row flex-no-wrap justify-between items-center mr-1">
+        <div
+          className={`${
+            searchActive === true ? "w-6/12" : "w-5/12"
+          } flex flex-row flex-no-wrap justify-between items-center mr-1`}
+        >
           <Link to="/outfits">
             <svg
               className="transition duration-300 ease-in-out opacity-80 hover:opacity-100"
@@ -165,19 +174,98 @@ const Header = () => {
               Voyages
             </p>
           </Link>
-          <StaticImage
-            src="../images/loupe.svg"
-            width={24}
-            height={24}
-            className="ml-2"
-            quality={95}
-            layout="fixed"
-            formats={["AUTO", "WEBP", "AVIF"]}
-            alt="Loupe recherche"
-          />
+          {searchActive === true ? (
+            <div className="relative">
+              <input
+                onChange={element => setQuery(element.target.value)}
+                className="ml-2 w-32 border-b border-rouille text-black font-sans-serif text-xs"
+                placeholder="Rechercher"
+                type="text"
+              />
+              <button
+                onClick={() => {
+                  setQuery(null)
+                  setSearchActive(false)
+                }}
+                className="absolute right-0 top-1/5 cursor-pointer"
+              >
+                &times;
+              </button>
+            </div>
+          ) : (
+            <StaticImage
+              onClick={() => setSearchActive(true)}
+              src="../images/loupe.svg"
+              width={20}
+              height={20}
+              className="ml-2 cursor-pointer"
+              quality={95}
+              layout="fixed"
+              formats={["AUTO", "WEBP", "AVIF"]}
+              alt="Loupe recherche"
+            />
+          )}
         </div>
       </header>
       <div className="mx-9 border-b border-rouille border-opacity-25"></div>
+      {results.length === 0 ? (
+        <div className="px-9 mt-6 mb-12">
+          <main>{layoutChildren}</main>
+        </div>
+      ) : (
+        <div className="px-9 mt-6 mb-12">
+          <h2 className="text-3xl font-sans-serif font-thin text-center text-rouille m-0">
+            {results.length} résultat(s) pour "{query}"
+          </h2>
+          <div className="w-full grid grid-cols-4 gap-6 mt-6">
+            {results.map((article, key) => {
+              return (
+                <Link
+                  className="imageContainer relative flex flex-col"
+                  key={key}
+                  to={`/${article.categorySlug}${article.uri}`}
+                >
+                  <div className="h-full">
+                    <GatsbyImage
+                      className="imageWithoutFullHeight h-80/100"
+                      alt={article.featuredImage.node.altText}
+                      image={
+                        article.featuredImage.node.localFile.childImageSharp
+                          .gatsbyImageData
+                      }
+                    ></GatsbyImage>
+                    <p className="text-black font-light font-sans-serif text-xl mx-0 mb-0 mt-3">
+                      {article.title}
+                    </p>
+                    <div className="flex flex-row flex-no-wrap justify-start items-center w-auto">
+                      <p className="text-black opacity-50 font-normal font-sans-serif text-xxs ml-0 mb-0 mt-0 mr-2">
+                        {article.date}
+                      </p>
+                      <div className="flex flex-row flex-no-wrap items-center">
+                        <StaticImage
+                          src="../images/comments-black.svg"
+                          width={16}
+                          height={16}
+                          className="mr-1 opacity-50"
+                          quality={100}
+                          formats={["AUTO", "WEBP", "AVIF"]}
+                          alt="Nombre de commentaires"
+                        />
+                        <p className="text-black opacity-50 font-normal font-sans-serif text-xxs m-0">
+                          {article.commentCount ? article.commentCount : 0}
+                        </p>
+                      </div>
+                    </div>
+                    <p className="absolute top-0 shadow-sm right-0 px-3 bg-white text-black font-sans-serif uppercase text-xxs">
+                      {article.category}
+                    </p>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+      )}
     </>
   )
 }

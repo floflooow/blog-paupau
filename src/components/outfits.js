@@ -76,7 +76,7 @@ const Outfits = () => {
               <Link className="h-72/100" to={`/outfits${article.uri}`}>
                 <GatsbyImage
                   className="imageWithoutFullHeight h-full"
-                  alt={article.altText}
+                  alt={article.featuredImage.node.altText}
                   image={
                     article.featuredImage.node.localFile.childImageSharp
                       .gatsbyImageData
