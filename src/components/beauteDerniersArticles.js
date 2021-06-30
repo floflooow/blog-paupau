@@ -58,7 +58,7 @@ const BeauteDerniersArticles = () => {
               <div className="h-full">
                 <GatsbyImage
                   className="imageWithoutFullHeight h-80/100"
-                  alt={article.altText}
+                  alt={article.featuredImage.node.altText}
                   image={
                     article.featuredImage.node.localFile.childImageSharp
                       .gatsbyImageData

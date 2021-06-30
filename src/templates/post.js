@@ -499,7 +499,7 @@ const Post = ({ data }) => {
                   >
                     <GatsbyImage
                       className="imageWithoutFullHeight h-full"
-                      alt={outfit.altText}
+                      alt={outfit.featuredImage.node.altText}
                       image={
                         outfit.featuredImage.node.localFile.childImageSharp
                           .gatsbyImageData
