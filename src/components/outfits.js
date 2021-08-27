@@ -60,18 +60,21 @@ const Outfits = () => {
     },
   }
   return (
-    <div className="flex flex-col pt-16 pb-12 px-20 -mx-9">
-      <div className="relative flex pt-16 pb-12 px-20 -mx-9 flex-row flex-no-wrap justify-between items-center">
-        <div className="transform -rotate-90 absolute left-0 bottom-8">
+    <div className="flex flex-col sm:pt-16 sm:pb-12 sm:px-20 sm:-mx-9">
+      <div className="relative flex sm:pt-16 sm:pb-12 sm:px-20 sm:-mx-9 flex-col sm:flex-row sm:flex-no-wrap justify-between items-center">
+        <div className="transform -rotate-90 absolute left-0 bottom-8 sm:block hidden">
           <h3 className="text-4xl font-sans-serif font-thin text-center text-rouille m-0">
             Outfits
           </h3>
         </div>
-        <div className="flex flex-row flex-no-wrap w-full mt-6">
+        <h3 className="text-4xl mt-9 font-sans-serif font-thin text-center text-rouille m-0 block sm:hidden">
+          Outfits
+        </h3>
+        <div className="flex flex-row flex-wrap sm:flex-no-wrap w-full mt-6">
           {articleList.map((article, key) => (
             <div
               key={key}
-              className="imageContainer relative w-30/100 mx-auto flex flex-col"
+              className="imageContainer relative sm:w-30/100 w-11/12 mx-auto flex flex-col sm:my-0 my-3"
             >
               <Link className="h-72/100" to={`/outfits${article.uri}`}>
                 <GatsbyImage
@@ -94,14 +97,14 @@ const Outfits = () => {
             </div>
           ))}
         </div>
-        <div className="transform rotate-90 absolute right-0 top-16">
+        <div className="transform rotate-90 absolute right-0 top-16 sm:block hidden">
           <h3 className="text-4xl font-sans-serif font-thin text-center text-rouille m-0">
             Outfits
           </h3>
         </div>
       </div>
       <Link
-        className="flex mt-3 mx-auto text-sm text-rouille font-thin font-serif hoverBorder"
+        className="flex mt-6 sm:mt-3 mb-9 mx-auto text-sm text-rouille font-thin font-serif hoverBorder"
         to="/outfits"
       >
         Voir tout

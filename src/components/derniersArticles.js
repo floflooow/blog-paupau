@@ -50,9 +50,9 @@ const DerniersArticles = () => {
   let othersArticles = data.allWpPost.nodes.slice(1)
   let firstImage = firstArticle.featuredImage.node
   return (
-    <div className="flex flex-row flex-no-wrap justify-between items-start w-full">
+    <div className="flex flex-row flex-wrap sm:flex-no-wrap justify-between items-start w-full">
       <Link
-        className="imageContainer relative w-49/100 h-full h-derniersArticles"
+        className="imageContainer relative sm:w-49/100 w-full h-full h-derniersArticles"
         to={`/${firstArticle.categories.nodes[0].slug}${firstArticle.uri}`}
       >
         <div className="h-full">
@@ -88,7 +88,7 @@ const DerniersArticles = () => {
           </p>
         </div>
       </Link>
-      <div className="w-49/100 flex flex-row flex-wrap justify-between">
+      <div className="sm:w-49/100 w-full flex flex-row flex-wrap justify-between p-3 sm:p-0">
         {othersArticles.map((article, key) => (
           <Link
             key={key}

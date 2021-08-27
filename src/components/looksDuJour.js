@@ -5,8 +5,10 @@ import { domToReact } from "html-react-parser"
 import { StaticImage } from "gatsby-plugin-image"
 import "react-responsive-carousel/lib/styles/carousel.min.css"
 import { Carousel } from "react-responsive-carousel"
+import { useWindowSize } from "./useWindowSize/useWindowSize"
 
 const LooksDuJour = () => {
+  const [width] = useWindowSize()
   const [choosenCategory, setChoosenCategory] = useState("wishlist")
   const data = useStaticQuery(graphql`
     query looksDuJour {
@@ -91,14 +93,14 @@ const LooksDuJour = () => {
     },
   }
   return (
-    <div className="flex flex-col pt-16 pb-24 px-20 -mx-9 bg-beige">
-      <div className="flex flex-row flex-no-wrap items-center justify-between w-5/12 mx-auto">
+    <div className="flex flex-col sm:pt-16 sm:pb-24 pb-9 px-4 sm:px-16 sm:-mx-9 bg-beige">
+      <div className="flex flex-row flex-no-wrap items-center justify-between sm:w-5/12 w-10/12 mx-auto sm:pt-0 pt-6">
         <div
           role="button"
           tabIndex={0}
           onKeyDown={() => setChoosenCategory("wishlist")}
           onClick={() => setChoosenCategory("wishlist")}
-          className={`text-xl font-serif font-thin ${
+          className={`sm:text-xl text-2xl font-serif font-thin ${
             choosenCategory === "wishlist"
               ? "text-rouille underline"
               : "text-gray opacity-50"
@@ -111,7 +113,7 @@ const LooksDuJour = () => {
           tabIndex={0}
           onKeyDown={() => setChoosenCategory("derniers")}
           onClick={() => setChoosenCategory("derniers")}
-          className={`text-xl font-serif font-thin ${
+          className={`sm:text-xl text-2xl font-serif font-thin ${
             choosenCategory === "derniers"
               ? "text-rouille underline"
               : "text-gray opacity-50"
@@ -128,7 +130,7 @@ const LooksDuJour = () => {
             showStatus={false}
             showThumbs={false}
             infiniteLoop={true}
-            centerSlidePercentage={100 / 3}
+            centerSlidePercentage={width > 640 ? 100 / 3 : 100 / 2}
             renderArrowPrev={(onClickHandler, hasPrev) =>
               hasPrev && (
                 <button
@@ -189,7 +191,7 @@ const LooksDuJour = () => {
               return (
                 <div
                   key={key}
-                  className="imageContainer relative w-10/12 mx-auto h-full flex flex-col"
+                  className="imageContainer relative sm:w-10/12 w-11/12 mx-auto h-full flex flex-col"
                 >
                   <a
                     target="_blank"
@@ -219,7 +221,7 @@ const LooksDuJour = () => {
             showStatus={false}
             infiniteLoop={true}
             showThumbs={false}
-            centerSlidePercentage={100 / 3}
+            centerSlidePercentage={width > 640 ? 100 / 3 : 100 / 2}
             renderArrowPrev={(onClickHandler, hasPrev) =>
               hasPrev && (
                 <button
@@ -280,7 +282,7 @@ const LooksDuJour = () => {
               return (
                 <div
                   key={key}
-                  className="imageContainer relative w-10/12 mx-auto h-full flex flex-col"
+                  className="imageContainer relative sm:w-10/12 w-11/12 mx-auto h-full flex flex-col"
                 >
                   <a
                     target="_blank"
