@@ -32,6 +32,7 @@ module.exports = {
         "32/100": "32%",
         "15/100": "15%",
         "23/100": "23%",
+        "50vw": "50vw",
       },
       height: {
         derniersArticles: "40rem",
