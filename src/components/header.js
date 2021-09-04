@@ -30,12 +30,12 @@ var styles = {
   },
   bmMenuWrap: {
     position: "fixed",
-    height: "100%",
-    marginTop: "-3.1rem",
+    height: "105%",
+    marginTop: "-3rem",
   },
   bmMenu: {
     background: "#FFEBD6",
-    padding: "2.5em 1.5em 0",
+    padding: "3rem 1.5rem",
     fontSize: "1.15em",
   },
   bmMorphShape: {
@@ -43,10 +43,11 @@ var styles = {
   },
   bmItemList: {
     color: "#b8b7ad",
-    padding: "0.8em",
+    display: "flex",
+    flexDirection: "column",
   },
   bmItem: {
-    display: "inline-block",
+    display: "flex",
   },
   bmOverlay: {
     background: "rgba(0, 0, 0, 0.3)",
@@ -79,30 +80,62 @@ const Header = ({ searchData, layoutChildren }) => {
             S'inscrire à la newsletter
           </p>
           <div className="flex flex-row flex-no-wrap ml-2 pl-2 border-l border-rouille my-2">
-            <StaticImage
-              src="../images/instagram.svg"
-              width={12}
-              className="mx-1"
-              quality={95}
-              formats={["AUTO", "WEBP", "AVIF"]}
-              alt="Instagram Logo"
-            />
-            <StaticImage
-              src="../images/pinterest.svg"
-              width={12}
-              className="mx-1"
-              quality={95}
-              formats={["AUTO", "WEBP", "AVIF"]}
-              alt="Pinterest Logo"
-            />
-            <StaticImage
-              src="../images/facebook.svg"
-              width={12}
-              className="mx-1"
-              quality={95}
-              formats={["AUTO", "WEBP", "AVIF"]}
-              alt="Facebook Logo"
-            />
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.instagram.com/larmoiredepauline__/"
+            >
+              <StaticImage
+                src="../images/instagram.svg"
+                width={12}
+                className="mx-1"
+                quality={95}
+                formats={["AUTO", "WEBP", "AVIF"]}
+                alt="Instagram Logo"
+              />
+            </a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.pinterest.fr/larmoiredepauline/"
+            >
+              <StaticImage
+                src="../images/pinterest.svg"
+                width={12}
+                className="mx-1"
+                quality={95}
+                formats={["AUTO", "WEBP", "AVIF"]}
+                alt="Pinterest Logo"
+              />
+            </a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.facebook.com/profile.php?id=100072022658768"
+            >
+              <StaticImage
+                src="../images/facebook.svg"
+                width={12}
+                className="mx-1"
+                quality={95}
+                formats={["AUTO", "WEBP", "AVIF"]}
+                alt="Facebook Logo"
+              />
+            </a>
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.tiktok.com/@larmoiredepauline"
+            >
+              <StaticImage
+                src="../images/tik-tok.svg"
+                width={12}
+                className="ml-1"
+                quality={95}
+                formats={["AUTO", "WEBP", "AVIF"]}
+                alt="Tiktok Logo"
+              />
+            </a>
           </div>
         </div>
       )}
@@ -135,18 +168,140 @@ const Header = ({ searchData, layoutChildren }) => {
             width={280}
             styles={styles}
           >
-            <a id="home" className="menu-item" href="/">
-              Home
-            </a>
-            <a id="about" className="menu-item" href="/about">
-              About
-            </a>
-            <a id="contact" className="menu-item" href="/contact">
-              Contact
-            </a>
-            <a className="menu-item--small" href="">
-              Settings
-            </a>
+            <div className="relative w-full flex-col items-end py-3">
+              <Link to="/outfits">
+                <p className="text-black font-sans-serif text-sm uppercase mb-0">
+                  Outfits
+                </p>
+              </Link>
+              <Link to="/mode">
+                <p className="text-black font-sans-serif text-sm uppercase mb-0">
+                  Mode
+                </p>
+              </Link>
+              <Link to="/beaute">
+                <p className="text-black font-sans-serif text-sm uppercase mb-0">
+                  Beauté
+                </p>
+              </Link>
+              <Link to="/lifestyle">
+                <p className="text-black font-sans-serif text-sm uppercase mb-0">
+                  Lifestyle
+                </p>
+              </Link>
+              <Link to="/food">
+                <p className="text-black font-sans-serif text-sm uppercase mb-0">
+                  Food
+                </p>
+              </Link>
+              <Link to="/voyages">
+                <p className="text-black font-sans-serif text-sm uppercase mb-0">
+                  Voyages
+                </p>
+              </Link>
+              <Link to="/wishlist">
+                <p className="text-black font-sans-serif text-sm uppercase mb-0">
+                  Wishlist
+                </p>
+              </Link>
+              <Link to="/derniers-achats">
+                <p className="text-black font-sans-serif text-sm uppercase mb-0">
+                  Derniers achats
+                </p>
+              </Link>
+            </div>
+            <div className="relative">
+              <input
+                onChange={element => setQuery(element.target.value)}
+                className="w-full bg-beige border-b border-rouille text-black font-sans-serif text-xs"
+                placeholder="Rechercher"
+                type="text"
+                value={query ? query : ""}
+              />
+              <button
+                onClick={() => {
+                  setQuery(null)
+                }}
+                className="absolute right-0 top-1/5 cursor-pointer"
+              >
+                &times;
+              </button>
+            </div>
+            <div className="w-full flex flex-row items-center my-3 justify-end">
+              <Link
+                to="/a-propos"
+                className="font-serif text-xxs font-light text-rouille mr-2 mb-0"
+              >
+                À propos
+              </Link>
+              <Link
+                to="/archives"
+                className="font-serif text-xxs font-light text-rouille mr-2 mb-0"
+              >
+                Archives
+              </Link>
+              <p className="font-serif text-xxs font-light text-rouille mb-0">
+                S'inscrire à la newsletter
+              </p>
+            </div>
+            <div className="flex flex-row justify-end">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.instagram.com/larmoiredepauline__/"
+              >
+                <StaticImage
+                  src="../images/instagram.svg"
+                  width={12}
+                  className="mx-1"
+                  quality={95}
+                  formats={["AUTO", "WEBP", "AVIF"]}
+                  alt="Instagram Logo"
+                />
+              </a>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.pinterest.fr/larmoiredepauline/"
+              >
+                <StaticImage
+                  src="../images/pinterest.svg"
+                  width={12}
+                  className="mx-1"
+                  quality={95}
+                  formats={["AUTO", "WEBP", "AVIF"]}
+                  alt="Pinterest Logo"
+                />
+              </a>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.facebook.com/profile.php?id=100072022658768"
+              >
+                <StaticImage
+                  src="../images/facebook.svg"
+                  width={12}
+                  className="mx-1"
+                  quality={95}
+                  formats={["AUTO", "WEBP", "AVIF"]}
+                  alt="Facebook Logo"
+                />
+              </a>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.tiktok.com/@larmoiredepauline"
+              >
+                <StaticImage
+                  src="../images/tik-tok.svg"
+                  width={12}
+                  className="ml-1"
+                  quality={95}
+                  formats={["AUTO", "WEBP", "AVIF"]}
+                  alt="Tiktok Logo"
+                />
+              </a>
+            </div>
           </Menu>
         ) : (
           <div
@@ -300,10 +455,10 @@ const Header = ({ searchData, layoutChildren }) => {
         </div>
       ) : (
         <div className="sm:px-9 sm:mt-6 sm:mb-12 w-full">
-          <h2 className="text-3xl font-sans-serif font-thin text-center text-rouille m-0">
+          <h2 className="text-3xl font-sans-serif font-thin text-center text-rouille m-0 mt-3 sm:mt-0">
             {results.length} résultat(s) pour "{query}"
           </h2>
-          <div className="w-full grid grid-cols-4 gap-6 mt-6">
+          <div className="w-10/12 mx-auto sm:w-full grid sm:grid-cols-4 grid-cols-1 sm:gap-6 mt-6">
             {results.map((article, key) => {
               return (
                 <Link
