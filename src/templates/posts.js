@@ -75,17 +75,17 @@ const Posts = ({ data, pageContext }) => {
     return (
       <Layout>
         <Seo title="Listings" />
-        <h2 className="text-4xl font-sans-serif font-thin text-left text-rouille m-0">
+        <h2 className="text-4xl font-sans-serif font-thin sm:text-left text-center text-rouille m-0 w-full mt-3 sm:mt-0">
           Ma wishlist
         </h2>
-        <div className="w-full flex flex-row flex-no-wrap">
-          <div className="w-8/12 my-9 pr-20 flex flex-col border-r border-rouille border-opacity-20">
+        <div className="w-full flex flex-col sm:flex-row sm:flex-no-wrap px-6 sm:px-0">
+          <div className="sm:w-8/12 w-full my-9 sm:pr-20 flex flex-col sm:border-r sm:border-rouille sm:border-opacity-20">
             <p>
               Voici ma wishlist shopping : ici, vous retrouverez les vêtements,
               accessoires, produits de beauté et les décorations sur lesquels
               j'ai eu un coup de coeur et que je souhaiterai acheter.
             </p>
-            <div className="w-full grid grid-cols-3 gap-3">
+            <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-3">
               {allArticle.map((article, key) => {
                 let text = article.excerpt.replace(/(<([^>]+)>)/gi, "")
                 return (
@@ -147,35 +147,67 @@ const Posts = ({ data, pageContext }) => {
               </div>
             </div>
           </div>
-          <div className="w-4/12  my-9 flex flex-col items-center">
+          <div className="w-4/12 my-9 hidden sm:flex flex-col items-center">
             <h3 className="text-sm font-sans-serif font-bold text-black text-center mt-6 mb-3">
               Suivez moi sur mes réseaux
             </h3>
             <div className="flex flex-row flex-no-wrap mx-auto">
-              <StaticImage
-                src="../images/instagram.svg"
-                width={28}
-                className=""
-                quality={95}
-                formats={["AUTO", "WEBP", "AVIF"]}
-                alt="Instagram Logo"
-              />
-              <StaticImage
-                src="../images/pinterest.svg"
-                width={28}
-                className="ml-3 mr-2"
-                quality={95}
-                formats={["AUTO", "WEBP", "AVIF"]}
-                alt="Pinterest Logo"
-              />
-              <StaticImage
-                src="../images/facebook.svg"
-                width={28}
-                className=""
-                quality={95}
-                formats={["AUTO", "WEBP", "AVIF"]}
-                alt="Facebook Logo"
-              />
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.instagram.com/larmoiredepauline__/"
+              >
+                <StaticImage
+                  src="../images/instagram.svg"
+                  width={28}
+                  className=""
+                  quality={95}
+                  formats={["AUTO", "WEBP", "AVIF"]}
+                  alt="Instagram Logo"
+                />
+              </a>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.pinterest.fr/larmoiredepauline/"
+              >
+                <StaticImage
+                  src="../images/pinterest.svg"
+                  width={28}
+                  className="ml-2 mr-1"
+                  quality={95}
+                  formats={["AUTO", "WEBP", "AVIF"]}
+                  alt="Pinterest Logo"
+                />
+              </a>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.facebook.com/profile.php?id=100072022658768"
+              >
+                <StaticImage
+                  src="../images/facebook.svg"
+                  width={28}
+                  className=""
+                  quality={95}
+                  formats={["AUTO", "WEBP", "AVIF"]}
+                  alt="Facebook Logo"
+                />
+              </a>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.tiktok.com/@larmoiredepauline"
+              >
+                <StaticImage
+                  src="../images/tik-tok.svg"
+                  width={28}
+                  className="ml-1"
+                  quality={95}
+                  formats={["AUTO", "WEBP", "AVIF"]}
+                  alt="Tiktok Logo"
+                />
+              </a>
             </div>
           </div>
         </div>
@@ -185,17 +217,17 @@ const Posts = ({ data, pageContext }) => {
     return (
       <Layout>
         <Seo title="Listings" />
-        <h2 className="text-4xl font-sans-serif font-thin text-left text-rouille m-0">
+        <h2 className="text-4xl font-sans-serif font-thin sm:text-left text-center text-rouille m-0 w-full mt-3 sm:mt-0">
           Mes derniers achats
         </h2>
-        <div className="w-full flex flex-row flex-no-wrap">
-          <div className="w-8/12 my-9 pr-20 flex flex-col border-r border-rouille border-opacity-20">
+        <div className="w-full flex flex-col sm:flex-row sm:flex-no-wrap px-6 sm:px-0">
+          <div className="sm:w-8/12 w-full my-9 sm:pr-20 flex flex-col sm:border-r sm:border-rouille sm:border-opacity-20">
             <p>
               Voici mes derniers achats : ici, vous retrouverez les vêtements,
               accessoires, produits de beauté et les décorations que je viens
               d'acheter.
             </p>
-            <div className="w-full grid grid-cols-3 gap-3">
+            <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-3">
               {allArticle.map((article, key) => {
                 let text = article.excerpt.replace(/(<([^>]+)>)/gi, "")
                 return (
@@ -257,35 +289,67 @@ const Posts = ({ data, pageContext }) => {
               </div>
             </div>
           </div>
-          <div className="w-4/12  my-9 flex flex-col items-center">
+          <div className="w-4/12 my-9 hidden sm:flex flex-col items-center">
             <h3 className="text-sm font-sans-serif font-bold text-black text-center mt-6 mb-3">
               Suivez moi sur mes réseaux
             </h3>
             <div className="flex flex-row flex-no-wrap mx-auto">
-              <StaticImage
-                src="../images/instagram.svg"
-                width={28}
-                className=""
-                quality={95}
-                formats={["AUTO", "WEBP", "AVIF"]}
-                alt="Instagram Logo"
-              />
-              <StaticImage
-                src="../images/pinterest.svg"
-                width={28}
-                className="ml-3 mr-2"
-                quality={95}
-                formats={["AUTO", "WEBP", "AVIF"]}
-                alt="Pinterest Logo"
-              />
-              <StaticImage
-                src="../images/facebook.svg"
-                width={28}
-                className=""
-                quality={95}
-                formats={["AUTO", "WEBP", "AVIF"]}
-                alt="Facebook Logo"
-              />
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.instagram.com/larmoiredepauline__/"
+              >
+                <StaticImage
+                  src="../images/instagram.svg"
+                  width={28}
+                  className=""
+                  quality={95}
+                  formats={["AUTO", "WEBP", "AVIF"]}
+                  alt="Instagram Logo"
+                />
+              </a>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.pinterest.fr/larmoiredepauline/"
+              >
+                <StaticImage
+                  src="../images/pinterest.svg"
+                  width={28}
+                  className="ml-2 mr-1"
+                  quality={95}
+                  formats={["AUTO", "WEBP", "AVIF"]}
+                  alt="Pinterest Logo"
+                />
+              </a>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.facebook.com/profile.php?id=100072022658768"
+              >
+                <StaticImage
+                  src="../images/facebook.svg"
+                  width={28}
+                  className=""
+                  quality={95}
+                  formats={["AUTO", "WEBP", "AVIF"]}
+                  alt="Facebook Logo"
+                />
+              </a>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.tiktok.com/@larmoiredepauline"
+              >
+                <StaticImage
+                  src="../images/tik-tok.svg"
+                  width={28}
+                  className="ml-1"
+                  quality={95}
+                  formats={["AUTO", "WEBP", "AVIF"]}
+                  alt="Tiktok Logo"
+                />
+              </a>
             </div>
           </div>
         </div>
@@ -295,10 +359,10 @@ const Posts = ({ data, pageContext }) => {
     return (
       <Layout>
         <Seo title="Listings" />
-        <h2 className="text-4xl font-sans-serif font-thin text-center text-rouille m-0">
+        <h2 className="text-4xl font-sans-serif font-thin text-center text-rouille m-0 mt-3 sm:mt-0">
           {pageContext.name}
         </h2>
-        <div className="w-full grid grid-cols-4 gap-6 mt-6 ">
+        <div className="sm:w-full w-10/12 grid sm:grid-cols-4 sm:gap-6 grid-cols-1 mt-6 mx-auto sm:mx-0">
           {finalArrayArticle.map((article, key) => {
             if (pageContext.slug === "outfits") {
               return (
@@ -319,7 +383,7 @@ const Posts = ({ data, pageContext }) => {
                       }
                     ></GatsbyImage>
                   </Link>
-                  <div className="w-full flex flex-col bg-beige pt-2 py-9 h-28/100">
+                  <div className="w-full flex flex-col bg-beige pt-2 py-9 h-28/100 mb-6 sm:mb-0">
                     <p className="text-white w-fit font-thin font-sans-serif text-xl mx-auto mt-2 mb-0 py-1 px-2 rounded-sm bg-rouille bg-opacity-75">
                       {article.title}
                     </p>

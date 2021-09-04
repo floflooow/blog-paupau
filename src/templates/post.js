@@ -425,8 +425,8 @@ const Post = ({ data }) => {
       <Seo title="Post" />
       {pageData.categories.nodes[0].slug === "outfits" ? (
         <>
-          <div className="flex flex-col sm:w-9/12 w-full mx-auto mt-12 mb-6">
-            <div className="grid grid-cols-2">
+          <div className="flex flex-col sm:w-9/12 w-full mx-auto mt-6 sm:mt-12 mb-6">
+            <div className="sm:grid sm:grid-cols-2">
               <GatsbyImage
                 alt={pageData.featuredImage.node.altText}
                 image={
@@ -434,8 +434,8 @@ const Post = ({ data }) => {
                     .gatsbyImageData
                 }
               ></GatsbyImage>
-              <div className="flex flex-col relative items-center justify-center h-full bg-beige py-3">
-                <p className="w-auto absolute top-3 text-base text-rouille font-bold font-sans-serif">
+              <div className="flex flex-col relative items-center justify-center h-full bg-beige py-9 sm:py-3">
+                <p className="w-auto hidden sm:block absolute top-3 text-base text-rouille font-bold font-sans-serif">
                   Outfits of today
                 </p>
                 <p className="w-auto mb-4 text-4xl text-black font-normal font-serif">
@@ -449,45 +449,77 @@ const Post = ({ data }) => {
                     <>{parse(pageData.content, optionsOutfit)}</>
                   )}
                 </div>
-                <div className="w-auto absolute bottom-3 flex flex-row flex-no-wrap items-center justify-end mt-6">
+                <div className="w-auto sm:absolute bottom-3 flex flex-row flex-no-wrap items-center justify-end mt-6">
                   <p className="font-sans-serif font-thin text-black text-xxs text-black m-0 mr-3">
                     Partager cet outfit
                   </p>
                   <div className="flex flex-row flex-no-wrap">
-                    <StaticImage
-                      src="../images/instagram.svg"
-                      width={14}
-                      className=""
-                      quality={95}
-                      formats={["AUTO", "WEBP", "AVIF"]}
-                      alt="Instagram Logo"
-                    />
-                    <StaticImage
-                      src="../images/pinterest.svg"
-                      width={14}
-                      className="ml-2 mr-1"
-                      quality={95}
-                      formats={["AUTO", "WEBP", "AVIF"]}
-                      alt="Pinterest Logo"
-                    />
-                    <StaticImage
-                      src="../images/facebook.svg"
-                      width={14}
-                      className=""
-                      quality={95}
-                      formats={["AUTO", "WEBP", "AVIF"]}
-                      alt="Facebook Logo"
-                    />
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href="https://www.instagram.com/larmoiredepauline__/"
+                    >
+                      <StaticImage
+                        src="../images/instagram.svg"
+                        width={14}
+                        className=""
+                        quality={95}
+                        formats={["AUTO", "WEBP", "AVIF"]}
+                        alt="Instagram Logo"
+                      />
+                    </a>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href="https://www.pinterest.fr/larmoiredepauline/"
+                    >
+                      <StaticImage
+                        src="../images/pinterest.svg"
+                        width={14}
+                        className="ml-2 mr-1"
+                        quality={95}
+                        formats={["AUTO", "WEBP", "AVIF"]}
+                        alt="Pinterest Logo"
+                      />
+                    </a>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href="https://www.facebook.com/profile.php?id=100072022658768"
+                    >
+                      <StaticImage
+                        src="../images/facebook.svg"
+                        width={14}
+                        className=""
+                        quality={95}
+                        formats={["AUTO", "WEBP", "AVIF"]}
+                        alt="Facebook Logo"
+                      />
+                    </a>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href="https://www.tiktok.com/@larmoiredepauline"
+                    >
+                      <StaticImage
+                        src="../images/tik-tok.svg"
+                        width={14}
+                        className="ml-1"
+                        quality={95}
+                        formats={["AUTO", "WEBP", "AVIF"]}
+                        alt="Tiktok Logo"
+                      />
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="flex flex-col w-full mt-12 mb-6">
+          <div className="flex flex-col w-full mt-12 mb-6 px-6 sm:px-0">
             <p className="w-auto mb-4 mx-auto text-2xl text-rouille font-thin font-sans-serif">
               Vous aimerez également
             </p>
-            <div className="w-full grid sm:grid-cols-3 grid-cols-2 gap-3 mt-6">
+            <div className="w-full grid sm:grid-cols-3 grid-cols-1 gap-3 mt-6">
               {newOutfitsData?.map((outfit, key) => (
                 <div
                   key={key}
@@ -506,7 +538,7 @@ const Post = ({ data }) => {
                       }
                     ></GatsbyImage>
                   </Link>
-                  <div className="w-full flex flex-col bg-beige pt-2 py-9 h-28/100">
+                  <div className="w-full flex flex-col bg-beige pt-2 py-9 h-28/100 mb-6 sm:mb-0">
                     <p className="text-white w-fit font-thin font-sans-serif text-xl mx-auto mt-2 mb-0 py-1 px-2 rounded-sm bg-rouille bg-opacity-75">
                       {outfit.title}
                     </p>
@@ -521,7 +553,7 @@ const Post = ({ data }) => {
         </>
       ) : (
         <>
-          <div className="flex flex-col w-10/12 mx-auto mt-12 mb-6">
+          <div className="flex flex-col w-10/12 mx-auto mt-6 sm:mt-12 mb-6">
             <p className="bg-beige text-xxs px-2 w-max text-rouille font-thin font-sans-serif m-0">
               {pageData.categories.nodes[0].name}
             </p>
@@ -547,8 +579,8 @@ const Post = ({ data }) => {
                 </p>
               </div>
             </div>
-            <div className="w-full flex flex-row flex-no-wrap">
-              <div className="w-8/12 my-9 pr-20 flex flex-col border-r border-rouille border-opacity-20">
+            <div className="w-full flex flex-col sm:flex-row sm:flex-no-wrap">
+              <div className="w-full sm:w-8/12 mt-6 sm:my-9 sm:pr-20 flex flex-col sm:border-r sm:border-rouille sm:border-opacity-20">
                 <GatsbyImage
                   alt={pageData.featuredImage.node.altText}
                   image={
@@ -559,8 +591,8 @@ const Post = ({ data }) => {
                 <div className="my-6 w-full">
                   {pageData.content && <>{parse(pageData.content, options)}</>}
                 </div>
-                <div className="w-full flex flex-row justify-between flex-no-wrap mt-12">
-                  <div className="w-5/12 flex flex-row flex-no-wrap items-center">
+                <div className="w-full flex flex-col sm:flex-row justify-between sm:flex-no-wrap sm:mt-12 mt-0 mb-6 sm:mb-0">
+                  <div className="w-full sm:w-5/12 flex flex-row sm:flex-no-wrap items-center">
                     <p className="font-sans-serif text-xs text-black m-0 mr-2 opacity-50">
                       Par Pauline Loiseau
                     </p>
@@ -577,40 +609,72 @@ const Post = ({ data }) => {
                       {pageData.commentCount ? pageData.commentCount : 0}
                     </p>
                   </div>
-                  <div className="w-7/12 flex flex-row flex-no-wrap items-center justify-end">
+                  <div className="w-full sm:w-7/12 flex flex-row sm:flex-no-wrap items-center justify-end">
                     <p className="font-sans-serif text-rouille text-xs text-black m-0 mr-3">
                       Partager ce post
                     </p>
                     <div className="flex flex-row flex-no-wrap">
-                      <StaticImage
-                        src="../images/instagram.svg"
-                        width={14}
-                        className=""
-                        quality={95}
-                        formats={["AUTO", "WEBP", "AVIF"]}
-                        alt="Instagram Logo"
-                      />
-                      <StaticImage
-                        src="../images/pinterest.svg"
-                        width={14}
-                        className="ml-2 mr-1"
-                        quality={95}
-                        formats={["AUTO", "WEBP", "AVIF"]}
-                        alt="Pinterest Logo"
-                      />
-                      <StaticImage
-                        src="../images/facebook.svg"
-                        width={14}
-                        className=""
-                        quality={95}
-                        formats={["AUTO", "WEBP", "AVIF"]}
-                        alt="Facebook Logo"
-                      />
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://www.instagram.com/larmoiredepauline__/"
+                      >
+                        <StaticImage
+                          src="../images/instagram.svg"
+                          width={14}
+                          className=""
+                          quality={95}
+                          formats={["AUTO", "WEBP", "AVIF"]}
+                          alt="Instagram Logo"
+                        />
+                      </a>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://www.pinterest.fr/larmoiredepauline/"
+                      >
+                        <StaticImage
+                          src="../images/pinterest.svg"
+                          width={14}
+                          className="ml-2 mr-1"
+                          quality={95}
+                          formats={["AUTO", "WEBP", "AVIF"]}
+                          alt="Pinterest Logo"
+                        />
+                      </a>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://www.facebook.com/profile.php?id=100072022658768"
+                      >
+                        <StaticImage
+                          src="../images/facebook.svg"
+                          width={14}
+                          className=""
+                          quality={95}
+                          formats={["AUTO", "WEBP", "AVIF"]}
+                          alt="Facebook Logo"
+                        />
+                      </a>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://www.tiktok.com/@larmoiredepauline"
+                      >
+                        <StaticImage
+                          src="../images/tik-tok.svg"
+                          width={14}
+                          className="ml-1"
+                          quality={95}
+                          formats={["AUTO", "WEBP", "AVIF"]}
+                          alt="Tiktok Logo"
+                        />
+                      </a>
                     </div>
                   </div>
                 </div>
               </div>
-              <div className="w-4/12 pl-20 my-9 flex flex-col">
+              <div className="hidden w-4/12 pl-20 my-9 sm:flex flex-col">
                 <div className="w-full bg-beige px-6">
                   <div className="w-10/12 mx-auto flex flex-col pt-6 pb-4">
                     <StaticImage
@@ -636,35 +700,67 @@ const Post = ({ data }) => {
                   Suivez moi sur mes réseaux
                 </h3>
                 <div className="flex flex-row flex-no-wrap mx-auto">
-                  <StaticImage
-                    src="../images/instagram.svg"
-                    width={28}
-                    className=""
-                    quality={95}
-                    formats={["AUTO", "WEBP", "AVIF"]}
-                    alt="Instagram Logo"
-                  />
-                  <StaticImage
-                    src="../images/pinterest.svg"
-                    width={28}
-                    className="ml-3 mr-2"
-                    quality={95}
-                    formats={["AUTO", "WEBP", "AVIF"]}
-                    alt="Pinterest Logo"
-                  />
-                  <StaticImage
-                    src="../images/facebook.svg"
-                    width={28}
-                    className=""
-                    quality={95}
-                    formats={["AUTO", "WEBP", "AVIF"]}
-                    alt="Facebook Logo"
-                  />
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://www.instagram.com/larmoiredepauline__/"
+                  >
+                    <StaticImage
+                      src="../images/instagram.svg"
+                      width={28}
+                      className=""
+                      quality={95}
+                      formats={["AUTO", "WEBP", "AVIF"]}
+                      alt="Instagram Logo"
+                    />
+                  </a>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://www.pinterest.fr/larmoiredepauline/"
+                  >
+                    <StaticImage
+                      src="../images/pinterest.svg"
+                      width={28}
+                      className="ml-2 mr-1"
+                      quality={95}
+                      formats={["AUTO", "WEBP", "AVIF"]}
+                      alt="Pinterest Logo"
+                    />
+                  </a>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://www.facebook.com/profile.php?id=100072022658768"
+                  >
+                    <StaticImage
+                      src="../images/facebook.svg"
+                      width={28}
+                      className=""
+                      quality={95}
+                      formats={["AUTO", "WEBP", "AVIF"]}
+                      alt="Facebook Logo"
+                    />
+                  </a>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://www.tiktok.com/@larmoiredepauline"
+                  >
+                    <StaticImage
+                      src="../images/tik-tok.svg"
+                      width={28}
+                      className="ml-1"
+                      quality={95}
+                      formats={["AUTO", "WEBP", "AVIF"]}
+                      alt="Tiktok Logo"
+                    />
+                  </a>
                 </div>
               </div>
             </div>
-            <div className="w-full flex flex-row flex-no-wrap justify-between">
-              <div className="w-7/12">
+            <div className="w-full flex flex-col sm:flex-row sm:flex-no-wrap justify-between">
+              <div className="w-full sm:w-7/12">
                 <h3 className="text-rouille text-2xl font-sans-serif font-bold">
                   {pageData.commentCount
                     ? pageData.commentCount + " commentaires"
@@ -679,7 +775,7 @@ const Post = ({ data }) => {
                     return (
                       <div
                         key={index}
-                        className="w-11/12 flex flex-col border border-black border-opacity-20 px-4 py-3 my-3"
+                        className="w-full sm:w-11/12 flex flex-col border border-black border-opacity-20 px-4 py-3 my-3"
                       >
                         <div className="w-full flex flex-row flex-no-wrap justify-between">
                           <p className="text-rouille text-md font-medium font-sans-serif m-0">
@@ -1185,7 +1281,7 @@ const Post = ({ data }) => {
                   }
                 })}
               </div>
-              <div className="w-5/12 flex flex-col">
+              <div className="w-full sm:w-5/12 flex flex-col mt-3 sm:mt-0">
                 <h3 className="text-rouille text-2xl font-sans-serif font-bold">
                   Ajouter un commentaire
                 </h3>

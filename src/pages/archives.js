@@ -54,10 +54,10 @@ const Archives = () => {
   return (
     <Layout>
       <Seo title="Archives" />
-      <h2 className="text-4xl font-sans-serif font-thin text-center text-rouille m-0">
+      <h2 className="text-4xl font-sans-serif font-thin text-center text-rouille m-0 mt-3 sm:mt-0">
         Archives
       </h2>
-      <div className="w-full grid grid-cols-4 gap-6 mt-6">
+      <div className="w-10/12 sm:w-full grid sm:grid-cols-4 sm:gap-6 mt-6 mx-auto">
         {finalArrayArticle.map((article, key) => {
           return (
             <Link
