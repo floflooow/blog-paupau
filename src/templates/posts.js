@@ -78,7 +78,12 @@ const Posts = ({ data, pageContext, location }) => {
   if (pageContext.slug === "wishlist") {
     return (
       <Layout>
-        <Seo title="Listings" />
+        <Seo
+          description="Voici ma wishlist shopping : ici, vous retrouverez les vêtements,
+              accessoires, produits de beauté et les décorations sur lesquels
+              j'ai eu un coup de coeur et que je souhaiterai acheter"
+          title="Ma wishlist - L'armoire de Pauline"
+        />
         <h2 className="text-4xl font-sans-serif font-thin sm:text-left text-center text-rouille m-0 w-full mt-3 sm:mt-0">
           Ma wishlist
         </h2>
@@ -223,7 +228,12 @@ const Posts = ({ data, pageContext, location }) => {
   } else if (pageContext.slug === "derniers-achats") {
     return (
       <Layout>
-        <Seo title="Listings" />
+        <Seo
+          description="Voici mes derniers achats : ici, vous retrouverez les vêtements,
+              accessoires, produits de beauté et les décorations que je viens
+              d'acheter"
+          title="Derniers achats - L'armoire de Pauline"
+        />
         <h2 className="text-4xl font-sans-serif font-thin sm:text-left text-center text-rouille m-0 w-full mt-3 sm:mt-0">
           Mes derniers achats
         </h2>
@@ -368,7 +378,14 @@ const Posts = ({ data, pageContext, location }) => {
   } else {
     return (
       <Layout>
-        <Seo title="Listings" />
+        <Seo
+          description={
+            "Sur cette page, vous retrouverez tous les articles " +
+            pageContext.name +
+            " du blog."
+          }
+          title={pageContext.name}
+        />
         <h2 className="text-4xl font-sans-serif font-thin text-center text-rouille m-0 mt-3 sm:mt-0">
           {pageContext.name}
         </h2>

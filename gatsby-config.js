@@ -1,6 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `L'armoire de Pauline`,
+    siteUrl: "https://blogpaupau.gatsbyjs.io",
     description: `L'armoire de Pauline, un blog mode, beauté et lifestyle (food, bons plans, voyages et bonnes adresses) crée et tenu par Pauline Loiseau.`,
     author: `Pauline Loiseau`,
   },
@@ -17,6 +18,62 @@ module.exports = {
     },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
+    {
+      resolve: "gatsby-plugin-robots-txt",
+      options: {
+        host: "https://blogpaupau.gatsbyjs.io",
+        sitemap: "https://blogpaupau.gatsbyjs.io/sitemap/sitemap-index.xml",
+        policy: [{ userAgent: "*", allow: "/" }],
+      },
+    },
+    {
+      resolve: "gatsby-plugin-sitemap",
+      options: {
+        query: `
+        {
+          allSitePage {
+            nodes {
+              path
+            }
+          }
+          allWpContentNode(filter: {nodeType: {in: ["Post", "Page"]}}) {
+            nodes {
+              ... on WpPost {
+                uri
+                modifiedGmt
+              }
+              ... on WpPage {
+                uri
+                modifiedGmt
+              }
+            }
+          }
+        }
+      `,
+        resolveSiteUrl: () => "https://blogpaupau.gatsbyjs.io",
+        resolvePages: ({
+          allSitePage: { nodes: allPages },
+          allWpContentNode: { nodes: allWpNodes },
+        }) => {
+          const wpNodeMap = allWpNodes.reduce((acc, node) => {
+            const { uri } = node
+            acc[uri] = node
+
+            return acc
+          }, {})
+
+          return allPages.map(page => {
+            return { ...page, ...wpNodeMap[page.path] }
+          })
+        },
+        serialize: ({ path, modifiedGmt }) => {
+          return {
+            url: path,
+            lastmod: modifiedGmt,
+          }
+        },
+      },
+    },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {

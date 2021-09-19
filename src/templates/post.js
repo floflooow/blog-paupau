@@ -3,7 +3,7 @@ import { GatsbyImage, StaticImage } from "gatsby-plugin-image"
 import parse, { domToReact } from "html-react-parser"
 import React, { useState } from "react"
 import Layout from "../components/layout"
-import Seo from "../components/seo"
+import Seo from "gatsby-plugin-wpgraphql-seo"
 import { FacebookShareButton, PinterestShareButton } from "react-share"
 
 export const pageQuery = graphql`
@@ -15,6 +15,38 @@ export const pageQuery = graphql`
             name
             slug
           }
+        }
+        seo {
+          breadcrumbs {
+            text
+            url
+          }
+          canonical
+          cornerstone
+          focuskw
+          fullHead
+          metaDesc
+          metaKeywords
+          metaRobotsNofollow
+          metaRobotsNoindex
+          opengraphAuthor
+          opengraphDescription
+          opengraphModifiedTime
+          opengraphPublishedTime
+          opengraphPublisher
+          opengraphSiteName
+          opengraphTitle
+          opengraphType
+          opengraphUrl
+          readingTime
+          title
+          twitterDescription
+          schema {
+            articleType
+            pageType
+            raw
+          }
+          twitterTitle
         }
         title
         slug
@@ -429,7 +461,7 @@ const Post = ({ data, location }) => {
   }
   return (
     <Layout>
-      <Seo title="Post" />
+      <Seo title={pageData.title + " - L'armoire de Pauline"} post={pageData} />
       {pageData.categories.nodes[0].slug === "outfits" ? (
         <>
           <div className="flex flex-col sm:w-9/12 w-full mx-auto mt-6 sm:mt-12 mb-6">
