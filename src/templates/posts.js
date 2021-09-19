@@ -4,6 +4,7 @@ import React, { useState } from "react"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 import parse, { domToReact } from "html-react-parser"
+import { FacebookShareButton, PinterestShareButton } from "react-share"
 
 export const pageQuery = graphql`
   query($slug: String) {
@@ -30,6 +31,9 @@ export const pageQuery = graphql`
                   jpgOptions: { quality: 100 }
                   layout: FULL_WIDTH
                 )
+                fixed {
+                  src
+                }
               }
             }
             altText
@@ -42,7 +46,7 @@ export const pageQuery = graphql`
   }
 `
 
-const Posts = ({ data, pageContext }) => {
+const Posts = ({ data, pageContext, location }) => {
   const [showMoreCount, setShowMoreCount] = useState(12)
   let allArticle = data.allWpPost.nodes
   let finalArrayArticle = allArticle.slice(0, showMoreCount)
@@ -119,30 +123,33 @@ const Posts = ({ data, pageContext }) => {
                   Partager ce post
                 </p>
                 <div className="flex flex-row flex-no-wrap">
-                  <StaticImage
-                    src="../images/instagram.svg"
-                    width={14}
-                    className=""
-                    quality={95}
-                    formats={["AUTO", "WEBP", "AVIF"]}
-                    alt="Instagram Logo"
-                  />
-                  <StaticImage
-                    src="../images/pinterest.svg"
-                    width={14}
-                    className="ml-2 mr-1"
-                    quality={95}
-                    formats={["AUTO", "WEBP", "AVIF"]}
-                    alt="Pinterest Logo"
-                  />
-                  <StaticImage
-                    src="../images/facebook.svg"
-                    width={14}
-                    className=""
-                    quality={95}
-                    formats={["AUTO", "WEBP", "AVIF"]}
-                    alt="Facebook Logo"
-                  />
+                  <FacebookShareButton url={location.href}>
+                    <StaticImage
+                      src="../images/facebook.svg"
+                      width={14}
+                      className=""
+                      quality={95}
+                      formats={["AUTO", "WEBP", "AVIF"]}
+                      alt="Facebook Logo"
+                    />
+                  </FacebookShareButton>
+                  <PinterestShareButton
+                    media={
+                      location.origin +
+                      allArticle[0].featuredImage.node.localFile.childImageSharp
+                        .fixed.src
+                    }
+                    url={location.href}
+                  >
+                    <StaticImage
+                      src="../images/pinterest.svg"
+                      width={14}
+                      className="ml-2 mr-1"
+                      quality={95}
+                      formats={["AUTO", "WEBP", "AVIF"]}
+                      alt="Pinterest Logo"
+                    />
+                  </PinterestShareButton>
                 </div>
               </div>
             </div>
@@ -261,30 +268,33 @@ const Posts = ({ data, pageContext }) => {
                   Partager ce post
                 </p>
                 <div className="flex flex-row flex-no-wrap">
-                  <StaticImage
-                    src="../images/instagram.svg"
-                    width={14}
-                    className=""
-                    quality={95}
-                    formats={["AUTO", "WEBP", "AVIF"]}
-                    alt="Instagram Logo"
-                  />
-                  <StaticImage
-                    src="../images/pinterest.svg"
-                    width={14}
-                    className="ml-2 mr-1"
-                    quality={95}
-                    formats={["AUTO", "WEBP", "AVIF"]}
-                    alt="Pinterest Logo"
-                  />
-                  <StaticImage
-                    src="../images/facebook.svg"
-                    width={14}
-                    className=""
-                    quality={95}
-                    formats={["AUTO", "WEBP", "AVIF"]}
-                    alt="Facebook Logo"
-                  />
+                  <FacebookShareButton url={location.href}>
+                    <StaticImage
+                      src="../images/facebook.svg"
+                      width={14}
+                      className=""
+                      quality={95}
+                      formats={["AUTO", "WEBP", "AVIF"]}
+                      alt="Facebook Logo"
+                    />
+                  </FacebookShareButton>
+                  <PinterestShareButton
+                    media={
+                      location.origin +
+                      allArticle[0].featuredImage.node.localFile.childImageSharp
+                        .fixed.src
+                    }
+                    url={location.href}
+                  >
+                    <StaticImage
+                      src="../images/pinterest.svg"
+                      width={14}
+                      className="ml-2 mr-1"
+                      quality={95}
+                      formats={["AUTO", "WEBP", "AVIF"]}
+                      alt="Pinterest Logo"
+                    />
+                  </PinterestShareButton>
                 </div>
               </div>
             </div>
