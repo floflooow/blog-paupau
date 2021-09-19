@@ -4,6 +4,7 @@ import parse, { domToReact } from "html-react-parser"
 import React, { useState } from "react"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
+import { FacebookShareButton, PinterestShareButton } from "react-share"
 
 export const pageQuery = graphql`
   query($slug: String) {
@@ -119,6 +120,9 @@ export const pageQuery = graphql`
                   jpgOptions: { quality: 100 }
                   layout: FULL_WIDTH
                 )
+                fixed {
+                  src
+                }
               }
             }
             altText
@@ -151,6 +155,9 @@ export const pageQuery = graphql`
                   jpgOptions: { quality: 100 }
                   layout: FULL_WIDTH
                 )
+                fixed {
+                  src
+                }
               }
             }
             altText
@@ -164,7 +171,7 @@ export const pageQuery = graphql`
   }
 `
 
-const Post = ({ data }) => {
+const Post = ({ data, location }) => {
   let pageData = data.allWpPost.nodes[0]
   let outfitsData = data.outfitsListing.nodes
   let postId = pageData.databaseId
@@ -454,24 +461,23 @@ const Post = ({ data }) => {
                     Partager cet outfit
                   </p>
                   <div className="flex flex-row flex-no-wrap">
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://www.instagram.com/larmoiredepauline__/"
-                    >
+                    <FacebookShareButton url={location.href}>
                       <StaticImage
-                        src="../images/instagram.svg"
+                        src="../images/facebook.svg"
                         width={14}
                         className=""
                         quality={95}
                         formats={["AUTO", "WEBP", "AVIF"]}
-                        alt="Instagram Logo"
+                        alt="Facebook Logo"
                       />
-                    </a>
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://www.pinterest.fr/larmoiredepauline/"
+                    </FacebookShareButton>
+                    <PinterestShareButton
+                      media={
+                        location.origin +
+                        pageData.featuredImage.node.localFile.childImageSharp
+                          .fixed.src
+                      }
+                      url={location.href}
                     >
                       <StaticImage
                         src="../images/pinterest.svg"
@@ -481,35 +487,7 @@ const Post = ({ data }) => {
                         formats={["AUTO", "WEBP", "AVIF"]}
                         alt="Pinterest Logo"
                       />
-                    </a>
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://www.facebook.com/profile.php?id=100072022658768"
-                    >
-                      <StaticImage
-                        src="../images/facebook.svg"
-                        width={14}
-                        className=""
-                        quality={95}
-                        formats={["AUTO", "WEBP", "AVIF"]}
-                        alt="Facebook Logo"
-                      />
-                    </a>
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://www.tiktok.com/@larmoiredepauline"
-                    >
-                      <StaticImage
-                        src="../images/tik-tok.svg"
-                        width={14}
-                        className="ml-1"
-                        quality={95}
-                        formats={["AUTO", "WEBP", "AVIF"]}
-                        alt="Tiktok Logo"
-                      />
-                    </a>
+                    </PinterestShareButton>
                   </div>
                 </div>
               </div>
@@ -614,24 +592,23 @@ const Post = ({ data }) => {
                       Partager ce post
                     </p>
                     <div className="flex flex-row flex-no-wrap">
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href="https://www.instagram.com/larmoiredepauline__/"
-                      >
+                      <FacebookShareButton url={location.href}>
                         <StaticImage
-                          src="../images/instagram.svg"
+                          src="../images/facebook.svg"
                           width={14}
                           className=""
                           quality={95}
                           formats={["AUTO", "WEBP", "AVIF"]}
-                          alt="Instagram Logo"
+                          alt="Facebook Logo"
                         />
-                      </a>
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href="https://www.pinterest.fr/larmoiredepauline/"
+                      </FacebookShareButton>
+                      <PinterestShareButton
+                        media={
+                          location.origin +
+                          pageData.featuredImage.node.localFile.childImageSharp
+                            .fixed.src
+                        }
+                        url={location.href}
                       >
                         <StaticImage
                           src="../images/pinterest.svg"
@@ -641,35 +618,7 @@ const Post = ({ data }) => {
                           formats={["AUTO", "WEBP", "AVIF"]}
                           alt="Pinterest Logo"
                         />
-                      </a>
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href="https://www.facebook.com/profile.php?id=100072022658768"
-                      >
-                        <StaticImage
-                          src="../images/facebook.svg"
-                          width={14}
-                          className=""
-                          quality={95}
-                          formats={["AUTO", "WEBP", "AVIF"]}
-                          alt="Facebook Logo"
-                        />
-                      </a>
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href="https://www.tiktok.com/@larmoiredepauline"
-                      >
-                        <StaticImage
-                          src="../images/tik-tok.svg"
-                          width={14}
-                          className="ml-1"
-                          quality={95}
-                          formats={["AUTO", "WEBP", "AVIF"]}
-                          alt="Tiktok Logo"
-                        />
-                      </a>
+                      </PinterestShareButton>
                     </div>
                   </div>
                 </div>
