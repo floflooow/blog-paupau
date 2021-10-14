@@ -76,9 +76,6 @@ const Header = ({ searchData, layoutChildren }) => {
           >
             Archives
           </Link>
-          <p className="font-serif text-xxs font-light text-rouille mr-2 mb-0">
-            S'inscrire à la newsletter
-          </p>
           <div className="flex flex-row flex-no-wrap ml-2 pl-2 border-l border-rouille my-2">
             <a
               target="_blank"
@@ -240,9 +237,6 @@ const Header = ({ searchData, layoutChildren }) => {
               >
                 Archives
               </Link>
-              <p className="font-serif text-xxs font-light text-rouille mb-0">
-                S'inscrire à la newsletter
-              </p>
             </div>
             <div className="flex flex-row justify-end">
               <a

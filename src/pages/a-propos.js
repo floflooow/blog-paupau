@@ -27,22 +27,6 @@ const APropos = () => (
           passionnent, notamment des articles de mode, beauté et lifestyle
           (food, bons plans, déco, voyages, culture…).
         </p>
-        <p className="text-black text-sm font-sans-serif">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et
-          turpis nibh. Sed varius maximus faucibus. Donec a justo tempor,
-          iaculis libero id, finibus libero.{" "}
-        </p>
-        <p className="text-black text-sm font-sans-serif">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam et
-          turpis nibh. Sed varius maximus faucibus. Donec a justo tempor,
-          iaculis libero id, finibus libero. Aenean tincidunt hendrerit leo vel
-          commodo.
-        </p>
-        <p className="text-black text-sm font-sans-serif">
-          Ut est augue, mattis semper pharetra eget, condimentum non dolor. Cras
-          egestas eros in mattis gravida. Suspendisse efficitur, tellus eu
-          pellentesque rutrum.
-        </p>
       </div>
     </div>
     <div className="w-10/12 sm:w-9/12 mx-auto bg-beige px-8 py-16 flex flex-col mt-6">
@@ -52,7 +36,7 @@ const APropos = () => (
       <div className="w-min">
         <Obfuscate
           className="text-sm font-sans-serif font-thin"
-          email="example@example.com"
+          email="linepau2986@gmail.com"
         />
       </div>
     </div>
