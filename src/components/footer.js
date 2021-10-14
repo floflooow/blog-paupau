@@ -142,9 +142,12 @@ const Footer = () => (
         >
           À propos
         </Link>
-        <p className="font-serif text-sm font-light text-rouille my-1 block sm:hidden">
+        <Link
+          to="/mentions-legales"
+          className="font-serif text-sm font-light text-rouille my-1 block sm:hidden"
+        >
           Mentions légales
-        </p>
+        </Link>
         <Link
           to="/archives"
           className="font-serif text-sm font-light text-rouille my-1"
@@ -152,9 +155,18 @@ const Footer = () => (
           Archives
         </Link>
 
-        <p className="font-serif text-sm font-light text-rouille my-1 hidden sm:block">
+        <Link
+          to="/mentions-legales"
+          className="font-serif text-sm font-light text-rouille my-1 hidden sm:block"
+        >
           Mentions légales
-        </p>
+        </Link>
+        <Link
+          to="/confidentialite"
+          className="font-serif text-sm font-light text-rouille my-1 hidden sm:block"
+        >
+          Confidentialité
+        </Link>
       </div>
     </div>
     <div className="flex flex-col sm:flex-row flex-wrap justify-end sm:justify-between items-center sm:mx-9 mx-3 my-1">
