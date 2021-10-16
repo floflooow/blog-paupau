@@ -11,7 +11,7 @@ var styles = {
     width: "1.8rem",
     height: "1.8rem",
     right: "1.25rem",
-    top: "1.3rem",
+    top: "2.7rem",
   },
   bmBurgerBars: {
     background: "#9a2f09",
@@ -31,7 +31,7 @@ var styles = {
   bmMenuWrap: {
     position: "fixed",
     height: "105%",
-    marginTop: "-3rem",
+    marginTop: "-4rem",
   },
   bmMenu: {
     background: "#FFEBD6",
@@ -138,12 +138,12 @@ const Header = ({ searchData, layoutChildren }) => {
       )}
 
       <header className="flex flex-row flex-no-wrap justify-between items-center w-full sm:px-9 sm:my-9 px-0 my-0">
-        <div className="sm:w-2/12 w-15/100 flex justify-start items-center ml-2 sm:ml-0">
+        <div className="sm:w-2/12 w-30/100 flex justify-start items-center ml-2 sm:ml-0">
           <Link to="/">
             <StaticImage
-              src="../images/logo_par_default.png"
-              width={100}
-              quality={95}
+              src="../images/logo-fond-blanc.png"
+              width={190}
+              quality={100}
               formats={["AUTO", "WEBP", "AVIF"]}
               alt="Logo L'armoire de Pauline"
             />

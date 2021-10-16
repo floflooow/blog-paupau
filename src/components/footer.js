@@ -86,9 +86,9 @@ const Footer = () => (
       <div className="sm:w-1/3 flex flex-col items-center justify-center sm:my-9 mb-3 sm:border-r sm:border-rouille sm:border-opacity-25">
         <Link to="/">
           <StaticImage
-            src="../images/logo_par_default.png"
-            width={100}
-            quality={95}
+            src="../images/logo-fond-beige.png"
+            width={160}
+            quality={100}
             formats={["AUTO", "WEBP", "AVIF"]}
             alt="Logo L'armoire de Pauline"
           />

@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: `L'armoire de Pauline`,
-    siteUrl: "https://blogpaupau.gatsbyjs.io",
+    siteUrl: "https://larmoiredepauline.fr",
     description: `L'armoire de Pauline, un blog mode, beauté et lifestyle (food, bons plans, voyages et bonnes adresses) crée et tenu par Pauline Loiseau.`,
     author: `Pauline Loiseau`,
   },
@@ -21,8 +21,8 @@ module.exports = {
     {
       resolve: "gatsby-plugin-robots-txt",
       options: {
-        host: "https://blogpaupau.gatsbyjs.io",
-        sitemap: "https://blogpaupau.gatsbyjs.io/sitemap/sitemap-index.xml",
+        host: "https://larmoiredepauline.fr",
+        sitemap: "https://larmoiredepauline.fr/sitemap/sitemap-index.xml",
         policy: [{ userAgent: "*", allow: "/" }],
       },
     },
@@ -50,7 +50,7 @@ module.exports = {
           }
         }
       `,
-        resolveSiteUrl: () => "https://blogpaupau.gatsbyjs.io",
+        resolveSiteUrl: () => "https://larmoiredepauline.fr",
         resolvePages: ({
           allSitePage: { nodes: allPages },
           allWpContentNode: { nodes: allWpNodes },
@@ -80,10 +80,10 @@ module.exports = {
         name: `gatsby-starter-default`,
         short_name: `starter`,
         start_url: `/`,
-        background_color: `#663399`,
-        theme_color: `#663399`,
+        background_color: `#FFEBD6`,
+        theme_color: `#FFEBD6`,
         display: `minimal-ui`,
-        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        icon: `src/images/logo-fond-beige.png`, // This path is relative to the root of the site.
       },
     },
     {
